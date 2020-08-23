@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
@@ -30,23 +29,12 @@ public class FXMLDocumentController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         Lista = new ArrayList();
-    }    
-
-    @FXML
-    private void evtLigaCirculo(MouseEvent event) 
-    {
-        
-    }
-
-    @FXML
-    private void evtCriaLinha(MouseEvent event) 
-    {
-        
-    }
-
+    }   
+    
     @FXML
     private void evtCriaCirculo(MouseEvent event) 
-    {
+    {          
+        
         if(Lista.size()<10)
         {
             Circle c = new Circle();
@@ -65,6 +53,14 @@ public class FXMLDocumentController implements Initializable
             pnPrincipal.getChildren().addAll(c,b); 
         }
         
+    }
+
+    @FXML
+    private void evtCria(MouseEvent event) {
+    }
+
+    @FXML
+    private void evtCriaLinha(MouseEvent event) {
     }
     
 }
