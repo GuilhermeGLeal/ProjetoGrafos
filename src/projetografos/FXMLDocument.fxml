@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="pnPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#evtCriaCirculo" onMouseDragged="#evtCriaLinha" onMouseReleased="#evtCria" prefHeight="742.0" prefWidth="1071.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetografos.FXMLDocumentController" />
+<AnchorPane fx:id="pnPrincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#evtExcluiVertice" onMouseClicked="#evtCriaCirculo" prefHeight="742.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetografos.FXMLDocumentController">
+   <children>
+      <AnchorPane fx:id="pnextra" layoutY="410.0" prefHeight="332.0" prefWidth="1069.0" style="-fx-background-color: gray;">
+         <children>
+            <CheckBox fx:id="cbValorado" layoutX="807.0" layoutY="22.0" mnemonicParsing="false" text="Valorado" />
+            <CheckBox fx:id="cbDire" layoutX="931.0" layoutY="22.0" mnemonicParsing="false" text="Direcionado" />
+            <JFXComboBox fx:id="cbLista" layoutX="28.0" layoutY="43.0" prefHeight="31.0" prefWidth="160.0" />
+            <Label layoutX="28.0" layoutY="12.0" text="Opções de Exibição" textFill="WHITE" />
+            <Label fx:id="labelUltimo" layoutX="271.0" layoutY="9.0" prefHeight="21.0" prefWidth="244.0" text="Último Vertice Selecionado:" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="580.0" layoutY="7.0" mnemonicParsing="false" onAction="#evtLimpaUltimo" text="Limpar Vertice Selecionado" />
+            <Label fx:id="labelUltimoAresta" layoutX="271.0" layoutY="61.0" prefHeight="21.0" prefWidth="244.0" text="Última Aresta Selecionado:" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="580.0" layoutY="57.0" mnemonicParsing="false" onAction="#evtLimparAresta" prefHeight="31.0" prefWidth="200.0" text="Limpar Aresta Selecionada" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
