@@ -5,16 +5,27 @@ import javafx.scene.shape.Line;
 public class Arestas {
     
     private Line aresta;
+    private Line direc;
     private int verticeIni;
     private int verticeFim;
     private int valor;
     private boolean direcioanado;
 
-    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor, boolean direcioanado) {
+    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor, boolean direcioanado,Line direc) {
         this.aresta = aresta;
         this.verticeIni = verticeIni;
         this.verticeFim = verticeFim;
         this.valor = valor;
+        this.direcioanado=direcioanado;
+        this.direc=direc;
+    }
+
+    public Line getDirec() {
+        return direc;
+    }
+
+    public void setDirec(Line direc) {
+        this.direc = direc;
     }
 
     public Line getAresta() {

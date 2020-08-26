@@ -3,7 +3,6 @@ package projetografos;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -23,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import projetografos.ClassesAuxiliares.Arestas;
 
 
@@ -67,48 +67,53 @@ public class FXMLDocumentController implements Initializable
         opcoes.add("Matriz de incidência (MI)");
         opcoes.add("Lista adjacência");
         
-        ObservableList<String> list = FXCollections.observableArrayList(opcoes);
 
+        ObservableList<String> list = FXCollections.observableArrayList(opcoes);
         
         cbLista.setItems(list);
         
     }   
     
     @FXML
-    private void evtCriaCirculo(MouseEvent event) {
+    private void evtCriaCirculo(MouseEvent event) 
+    {
         double x, y;
 
         x = event.getSceneX();
         y = event.getSceneY();
 
-        if (x < pnextra.getLayoutX() - 15 || y < pnextra.getLayoutY() - 15 && (!flag || ultimaAresta == -1)) {
+        if (x < pnextra.getLayoutX() - 15 || y < pnextra.getLayoutY() - 15 && (!flag || ultimaAresta == -1)) 
+        {
+            boolean ok = true;
+            double aux;
+            int i;
 
-                boolean ok = true;
-                double aux;
-                int i;
-
-                for (i = 0; i < Lista.size() && ok; i++) {
-                    aux = Math.sqrt(Math.pow((x - Lista.get(i).getCenterX()), 2) + Math.pow((y - Lista.get(i).getCenterY()), 2));
-
-                    if (Lista.get(i).getRadius() >= aux) {
-                        ok = false;
-                    }
+            for (i = 0; i < Lista.size() && ok; i++) 
+            {
+                aux = Math.sqrt(Math.pow((x - Lista.get(i).getCenterX()), 2) + Math.pow((y - Lista.get(i).getCenterY()), 2));
+                if (Lista.get(i).getRadius() >= aux) 
+                {
+                    ok = false;
                 }
+            }
 
-                if (ok) {
-                    criaCirculo(event);
-                } else if (ultimo != -1) {
-                    criaLinha(i);
-                } else {
-
-                    ultimo = i;
-                    labelUltimo.setText("Vértice selecionado: "+ultimo);
-                }
-          
-
+            if (ok) 
+            {
+                criaCirculo(event);
+            } 
+            else if (ultimo != -1) 
+            {
+                criaLinha(i);              
+            } 
+            else 
+            {
+                ultimo = i;
+                labelUltimo.setText("Vértice selecionado: "+ultimo);
+                Lista.get(i-1).setFill(Paint.valueOf("#FF0000"));
+            }         
         }
         else
-              flag = false;
+            flag = false;
     }
     
     
@@ -120,17 +125,15 @@ public class FXMLDocumentController implements Initializable
         xf=Lista.get(i-1).getCenterX()-5;
         yf=Lista.get(i-1).getCenterY()-5;
         Line l= new Line(xi,yi,xf,yf);
-       
+        l.setStrokeWidth(5);
         
         if(direcionado)
-            LisAre.add(new Arestas(l,ultimo-1,i-1,0, true));
+             LisAre.add(new Arestas(l,ultimo-1,i-1,0, true,null));
         else
-            LisAre.add(new Arestas(l,ultimo-1,i-1,0, false));
-            
+             LisAre.add(new Arestas(l,ultimo-1,i-1,0, false,null));
         
-        l.setStrokeWidth(5);
-        pnPrincipal.getChildren().add(l);
-        
+        pnPrincipal.getChildren().addAll(l);
+       
         
         l.setOnMouseEntered((event) -> {
                 l.setCursor(Cursor.HAND);
@@ -140,7 +143,8 @@ public class FXMLDocumentController implements Initializable
         l.setOnMouseClicked((event) -> {
             
             int aux, aux2;
-            for (int j = 0; j < LisAre.size(); j++) {
+            for (int j = 0; j < LisAre.size(); j++) 
+            {
                 if(LisAre.get(j).getAresta().equals(l))
                     this.ultimaAresta = j;
             }
@@ -150,6 +154,7 @@ public class FXMLDocumentController implements Initializable
             labelUltimoAresta.setText("Aresta selecionada entre: "+ aux+ " e "+ aux2);
             
         });
+        Lista.get(ultimo-1).setFill(Paint.valueOf("#FFFFFF"));
         this.ultimo=-1;
         labelUltimo.setText("Vértice selecionado: "+ultimo);
         flag = false;
