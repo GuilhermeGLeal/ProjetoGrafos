@@ -11,7 +11,7 @@
    <children>
       <AnchorPane fx:id="pnextra" layoutY="360.0" prefHeight="382.0" prefWidth="1069.0" style="-fx-background-color: gray;">
          <children>
-            <CheckBox fx:id="cbValorado" layoutX="931.0" layoutY="64.0" mnemonicParsing="false" text="Valorado" />
+            <CheckBox fx:id="cbValorado" layoutX="931.0" layoutY="64.0" mnemonicParsing="false" onAction="#evtValorado" text="Valorado" />
             <CheckBox fx:id="cbDire" layoutX="931.0" layoutY="22.0" mnemonicParsing="false" onAction="#evtDire" text="Direcionado" />
             <JFXComboBox fx:id="cbLista" layoutX="14.0" layoutY="44.0" prefHeight="31.0" prefWidth="255.0" />
             <Label layoutX="14.0" layoutY="12.0" text="Opções de Exibição" textFill="WHITE" />

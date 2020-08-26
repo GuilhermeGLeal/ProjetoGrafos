@@ -22,7 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import projetografos.ClassesAuxiliares.Arestas;
 
 
@@ -47,8 +46,10 @@ public class FXMLDocumentController implements Initializable
     private List<Label> ListLabel;
     @FXML
     private Label labelUltimoAresta;
-    private boolean flag = false;
-    private boolean direcionado = false;
+    private boolean flag;
+    private boolean direcionado;
+    private boolean valorado;
+    private List<Label> valoresArestas;
        
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -56,20 +57,21 @@ public class FXMLDocumentController implements Initializable
         Lista = new ArrayList();
         LisAre = new ArrayList();
         ListLabel = new ArrayList();
+        valoresArestas = new ArrayList();
+        flag = false;
+        direcionado = false;
+        valorado = false;
         
         this.ultimo=-1;
         this.ultimaAresta = -1;
         labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
         labelUltimo.setText("Vértice selecionado: "+ultimo);
-        List<String> opcoes = new ArrayList();
         
+        List<String> opcoes = new ArrayList();
         opcoes.add("Matriz de adjacência (MA)");
         opcoes.add("Matriz de incidência (MI)");
         opcoes.add("Lista adjacência");
-        
-
-        ObservableList<String> list = FXCollections.observableArrayList(opcoes);
-        
+        ObservableList<String> list = FXCollections.observableArrayList(opcoes);        
         cbLista.setItems(list);
         
     }   
@@ -240,8 +242,7 @@ public class FXMLDocumentController implements Initializable
         labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
     }
 
-    @FXML
-    private void evtDire(ActionEvent event) {
+    public void apagaTudo(ActionEvent event){
         
         for (int i = 0; i < Lista.size(); i++) {
             
@@ -257,9 +258,16 @@ public class FXMLDocumentController implements Initializable
         Lista.clear();
         ListLabel.clear();
         LisAre.clear();
+        valoresArestas.clear();
         
         evtLimpaUltimo(event);
         evtLimparAresta(event);
+    }
+    
+    @FXML
+    private void evtDire(ActionEvent event) {
+              
+        apagaTudo(event);
         
         if(cbDire.isArmed()){
             
@@ -267,6 +275,19 @@ public class FXMLDocumentController implements Initializable
         }
         else
             direcionado = true;
+    }
+
+    @FXML
+    private void evtValorado(ActionEvent event) {
+        
+        apagaTudo(event);
+        
+        if(cbValorado.isArmed()){
+            
+            valorado = false;
+        }
+        else
+            valorado = true;
     }
     
 }
