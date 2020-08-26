@@ -48,6 +48,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Label labelUltimoAresta;
     private boolean flag = false;
+    private boolean direcionado = false;
        
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -80,7 +81,7 @@ public class FXMLDocumentController implements Initializable
         x = event.getSceneX();
         y = event.getSceneY();
 
-        if (x < pnextra.getLayoutX() - 15 || y < pnextra.getLayoutY() - 15 && !flag) {
+        if (x < pnextra.getLayoutX() - 15 || y < pnextra.getLayoutY() - 15 && (!flag || ultimaAresta == -1)) {
 
                 boolean ok = true;
                 double aux;
@@ -120,12 +121,20 @@ public class FXMLDocumentController implements Initializable
         yf=Lista.get(i-1).getCenterY()-5;
         Line l= new Line(xi,yi,xf,yf);
        
+        
+        if(direcionado)
+            LisAre.add(new Arestas(l,ultimo-1,i-1,0, true));
+        else
+            LisAre.add(new Arestas(l,ultimo-1,i-1,0, false));
+            
+        
         l.setStrokeWidth(5);
         pnPrincipal.getChildren().add(l);
-        LisAre.add(new Arestas(l,ultimo-1,i-1,0, false));
+        
+        
         l.setOnMouseEntered((event) -> {
                 l.setCursor(Cursor.HAND);
-                flag = true;
+               flag = true;
                 
         });
         l.setOnMouseClicked((event) -> {
@@ -229,13 +238,30 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void evtDire(ActionEvent event) {
         
+        for (int i = 0; i < Lista.size(); i++) {
+            
+            pnPrincipal.getChildren().remove(Lista.get(i));
+            pnPrincipal.getChildren().remove(ListLabel.get(i));
+        }
+        
+        for (int i = 0; i < LisAre.size(); i++) {
+            
+            pnPrincipal.getChildren().remove(LisAre.get(i).getAresta());
+        }
+        
+        Lista.clear();
+        ListLabel.clear();
+        LisAre.clear();
+        
+        evtLimpaUltimo(event);
+        evtLimparAresta(event);
+        
         if(cbDire.isArmed()){
             
+            direcionado = false;
         }
-        else{
-            
-            
-        }
+        else
+            direcionado = true;
     }
     
 }
