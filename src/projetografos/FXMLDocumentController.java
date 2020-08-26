@@ -3,8 +3,11 @@ package projetografos;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,8 +58,19 @@ public class FXMLDocumentController implements Initializable
         
         this.ultimo=-1;
         this.ultimaAresta = -1;
-        labelUltimoAresta.setText("Última Aresta Selecionado: "+ultimaAresta);
-        labelUltimo.setText("Último Vertice Selecionado: "+ultimo);
+        labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
+        labelUltimo.setText("Vértice selecionado: "+ultimo);
+        List<String> opcoes = new ArrayList();
+        
+        opcoes.add("Matriz de adjacência (MA)");
+        opcoes.add("Matriz de incidência (MI)");
+        opcoes.add("Lista adjacência");
+        
+        ObservableList<String> list = FXCollections.observableArrayList(opcoes);
+
+        
+        cbLista.setItems(list);
+        
     }   
     
     @FXML
@@ -87,7 +101,7 @@ public class FXMLDocumentController implements Initializable
                 } else {
 
                     ultimo = i;
-                    labelUltimo.setText("Último Vertice Selecionado: " + ultimo);
+                    labelUltimo.setText("Vértice selecionado: "+ultimo);
                 }
           
 
@@ -100,15 +114,15 @@ public class FXMLDocumentController implements Initializable
     private void criaLinha(int i)
     {
         double xi,yi,xf,yf;
-        xi=Lista.get(ultimo-1).getCenterX();
-        yi=Lista.get(ultimo-1).getCenterY();
-        xf=Lista.get(i-1).getCenterX();
-        yf=Lista.get(i-1).getCenterY();
+        xi=Lista.get(ultimo-1).getCenterX()-5;
+        yi=Lista.get(ultimo-1).getCenterY()-5;
+        xf=Lista.get(i-1).getCenterX()-5;
+        yf=Lista.get(i-1).getCenterY()-5;
         Line l= new Line(xi,yi,xf,yf);
        
         l.setStrokeWidth(5);
         pnPrincipal.getChildren().add(l);
-        LisAre.add(new Arestas(l,ultimo-1,i-1,0));
+        LisAre.add(new Arestas(l,ultimo-1,i-1,0, false));
         l.setOnMouseEntered((event) -> {
                 l.setCursor(Cursor.HAND);
                 flag = true;
@@ -116,16 +130,20 @@ public class FXMLDocumentController implements Initializable
         });
         l.setOnMouseClicked((event) -> {
             
+            int aux, aux2;
             for (int j = 0; j < LisAre.size(); j++) {
                 if(LisAre.get(j).getAresta().equals(l))
                     this.ultimaAresta = j;
             }
-            labelUltimoAresta.setText("Última Aresta Selecionado: "+ultimaAresta);
+            
+            aux = LisAre.get(ultimaAresta).getVerticeIni()+1;
+            aux2 = LisAre.get(ultimaAresta).getVerticeFim()+1;
+            labelUltimoAresta.setText("Aresta selecionada entre: "+ aux+ " e "+ aux2);
             
         });
         this.ultimo=-1;
-        labelUltimo.setText("Último Vertice Selecionado: "+ultimo);
-          flag = false;
+        labelUltimo.setText("Vértice selecionado: "+ultimo);
+        flag = false;
 
     }
     
@@ -134,6 +152,7 @@ public class FXMLDocumentController implements Initializable
         double x,y;
         x=event.getSceneX();
         y=event.getSceneY();
+        
         if(Lista.size()<10)
         {
             Circle c = new Circle();
@@ -159,7 +178,7 @@ public class FXMLDocumentController implements Initializable
     private void evtLimpaUltimo(ActionEvent event) {
         
         this.ultimo = -1;
-        labelUltimo.setText("Último Vertice Selecionado: "+ultimo);
+        labelUltimo.setText("Vértice selecionado: "+ultimo);
     }
 
     @FXML
@@ -178,7 +197,7 @@ public class FXMLDocumentController implements Initializable
                     pnPrincipal.getChildren().remove(ListLabel.get(ultimo-1));
                     ListLabel.remove(ultimo-1);
                     this.ultimo = -1;
-                    labelUltimo.setText("Último Vertice Selecionado: "+ultimo);
+                    labelUltimo.setText("Vértice selecionado: "+ultimo);
                 }
             }
             
@@ -192,7 +211,7 @@ public class FXMLDocumentController implements Initializable
                     pnPrincipal.getChildren().remove(LisAre.get(ultimaAresta).getAresta());
                     LisAre.remove(ultimaAresta);
                     this.ultimaAresta = -1;
-                    labelUltimoAresta.setText("Última Aresta Selecionado: "+ultimaAresta);
+                    labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
                     flag = false;
                 }
 
@@ -204,7 +223,19 @@ public class FXMLDocumentController implements Initializable
     private void evtLimparAresta(ActionEvent event) {
         
         this.ultimaAresta = -1;
-        labelUltimoAresta.setText("Última Aresta Selecionado: "+ultimaAresta);
+        labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
+    }
+
+    @FXML
+    private void evtDire(ActionEvent event) {
+        
+        if(cbDire.isArmed()){
+            
+        }
+        else{
+            
+            
+        }
     }
     
 }

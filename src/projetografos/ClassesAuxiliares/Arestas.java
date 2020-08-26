@@ -8,8 +8,9 @@ public class Arestas {
     private int verticeIni;
     private int verticeFim;
     private int valor;
+    private boolean direcioanado;
 
-    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor) {
+    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor, boolean direcioanado) {
         this.aresta = aresta;
         this.verticeIni = verticeIni;
         this.verticeFim = verticeFim;
@@ -48,5 +49,12 @@ public class Arestas {
         this.valor = valor;
     }
     
+     public boolean isDirecioanado() {
+        return direcioanado;
+    }
+
+    public void setDirecioanado(boolean direcioanado) {
+        this.direcioanado = direcioanado;
+    }
     
 }
