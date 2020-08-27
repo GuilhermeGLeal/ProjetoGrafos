@@ -485,6 +485,7 @@ public class FXMLDocumentController implements Initializable
         
         evtLimpaUltimo(event);
         evtLimparAresta(event);
+        
         for (int i = 0; i < Lista.size(); i++) {
             
             pnPrincipal.getChildren().remove(Lista.get(i));

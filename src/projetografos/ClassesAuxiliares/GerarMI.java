@@ -4,6 +4,8 @@ import java.util.List;
 
 
 public class GerarMI {
+
+   
     
     private int matriz[][];
 
@@ -12,6 +14,13 @@ public class GerarMI {
         this.matriz = new int[10][10];
     }
 
+    public int[][] getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(int[][] matriz) {
+        this.matriz = matriz;
+    }
     public void geraMatriz(List<Arestas> listaArestas) {
 
         int vertiIni, vertiFim;
@@ -26,6 +35,16 @@ public class GerarMI {
             if(listaArestas.get(i).isDirecioanado()){
                 
                 
+                if(valor == 0){
+                                         
+                    this.matriz[vertiIni][i] = -1;
+                    this.matriz[vertiFim][i] = 1;
+                }
+                else{
+                    
+                    this.matriz[vertiIni][i] = -valor;
+                    this.matriz[vertiFim][i] = valor;
+                }
             }
             else{
                 
@@ -57,6 +76,11 @@ public class GerarMI {
     }
 
     public void verificaCompleto() {
+
+        // verificar se todos acima e abaixo da diagonal principal tem um ou valor
+    }
+    
+     public void verificaMultigrafo() {
 
         // verificar se todos acima e abaixo da diagonal principal tem um ou valor
     }
