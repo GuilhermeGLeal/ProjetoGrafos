@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 
 
@@ -50,7 +51,9 @@ public class FXMLDocumentController implements Initializable
     private boolean direcionado;
     private boolean valorado;
     private List<Label> valoresArestas;
-       
+    private int numVertice = 1;
+    private boolean isLaco;
+            
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -105,7 +108,7 @@ public class FXMLDocumentController implements Initializable
             } 
             else if (ultimo != -1) 
             {
-                criaLinha(i);              
+                criaFormas(i);              
             } 
             else 
             {
@@ -118,51 +121,228 @@ public class FXMLDocumentController implements Initializable
             flag = false;
     }
     
-    
-    private void criaLinha(int i)
-    {
-        double xi,yi,xf,yf;
-        xi=Lista.get(ultimo-1).getCenterX()-5;
-        yi=Lista.get(ultimo-1).getCenterY()-5;
-        xf=Lista.get(i-1).getCenterX()-5;
-        yf=Lista.get(i-1).getCenterY()-5;
-        Line l= new Line(xi,yi,xf,yf);
-        l.setStrokeWidth(5);
+    private int pegaValor(){
         
-        if(direcionado)
-             LisAre.add(new Arestas(l,ultimo-1,i-1,0, true,null));
-        else
-             LisAre.add(new Arestas(l,ultimo-1,i-1,0, false,null));
+        boolean  aux = true;
+        int num = 0;
         
-        pnPrincipal.getChildren().addAll(l);
+        while(aux){
+         
+            try{
+                
+                num = Integer.valueOf(JOptionPane.showInputDialog(null, " Entre com o valor da aresta: "));
+                aux = false;
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null, "Número inserido inválido!!!");
+                aux = true;
+            }
+        }
        
         
-        l.setOnMouseEntered((event) -> {
-                l.setCursor(Cursor.HAND);
-               flag = true;
-                
-        });
-        l.setOnMouseClicked((event) -> {
-            
-            int aux, aux2;
-            for (int j = 0; j < LisAre.size(); j++) 
-            {
-                if(LisAre.get(j).getAresta().equals(l))
-                    this.ultimaAresta = j;
-            }
-            
-            aux = LisAre.get(ultimaAresta).getVerticeIni()+1;
-            aux2 = LisAre.get(ultimaAresta).getVerticeFim()+1;
-            labelUltimoAresta.setText("Aresta selecionada entre: "+ aux+ " e "+ aux2);
-            
-        });
-        Lista.get(ultimo-1).setFill(Paint.valueOf("#FFFFFF"));
-        this.ultimo=-1;
-        labelUltimo.setText("Vértice selecionado: "+ultimo);
-        flag = false;
-
+        return num;
     }
     
+    private void criarValor(int valor, Line l) {
+
+        double finalX, finalY;
+        finalX = l.getEndX() + l.getStartX();
+        finalY = l.getEndY() + l.getStartY();
+        Label valorado = new Label();
+        valorado.setText(""+valor);
+        valorado.setTranslateX(finalX/2);
+        valorado.setTranslateY(finalY/2);
+        valorado.setTextFill(Paint.valueOf("#e53242"));
+        valoresArestas.add(valorado);
+        pnPrincipal.getChildren().add(valorado);
+       
+    }
+    
+    private Line criarDirecao(int i){
+        
+        double xi, yi, xf, yf;
+        
+        xi = Lista.get(ultimo - 1).getCenterX() - 5 ;
+        yi = Lista.get(ultimo - 1).getCenterY() - 5;
+        xf = Lista.get(i - 1).getCenterX() - 5;
+        yf = Lista.get(i - 1).getCenterY() - 5;
+        Line aux = new Line(xi,yi, xf, yf);
+        aux.setStrokeWidth(5);
+        aux.setFill(Paint.valueOf("#0050c1"));
+ 
+        return aux;
+    }
+    
+    
+    private void CriaCirculo(int i) {
+
+        double centerX,centerY,radius;
+        Arestas auxA = new Arestas();
+        Circle cir = new Circle();
+        centerX = Lista.get(i-1).getCenterX() - 20;
+        centerY = Lista.get(i-1).getCenterY() - 20;
+        radius = 20; 
+        cir.setCenterX(centerX);
+        cir.setCenterY(centerY);
+        cir.setRadius(radius);
+        cir.setFill(Paint.valueOf("#f6f6f6"));
+        cir.setStroke(Paint.valueOf("#000000"));
+        
+        int valor = 0;
+
+        auxA.setLaco(cir);
+        auxA.setVerticeIni(ultimo - 1);
+        auxA.setVerticeFim(i - 1);
+        
+        if(!direcionado){
+             
+            auxA.setDirecioanado(false);
+        }
+        else{
+            
+            auxA.setDirecioanado(true);
+        }
+        
+        
+        if(valorado){
+            
+            valor = pegaValor();
+            auxA.setValor(valor);
+        }
+        
+        if(i-1 < LisAre.size()){
+            
+            if(LisAre.get(i-1).getAresta() == null)
+                LisAre.add(auxA);
+             else
+            LisAre.get(i-1).setLaco(cir);
+        }
+        else
+             LisAre.add(auxA);
+      
+        
+        cir.setOnMouseEntered((event) -> {
+            cir.setCursor(Cursor.HAND);
+            flag = true;
+
+        });
+        
+        cir.setOnMouseClicked((event) -> {
+
+            int aux, aux2;
+            for (int j = 0; j < LisAre.size(); j++) {
+                if (LisAre.get(j).getLaco() != null && LisAre.get(j).getLaco().equals(cir)) {
+                    this.ultimaAresta = j;
+                }
+            }
+            
+            isLaco = true;
+            aux = LisAre.get(ultimaAresta).getVerticeIni() + 1;
+            LisAre.get(ultimaAresta).getLaco().setStroke(Paint.valueOf("#1842bf"));
+            labelUltimoAresta.setText("Aresta selecionada entre: " + i + " e " + i);
+
+        });
+        
+        
+        pnPrincipal.getChildren().add(cir);
+
+        Lista.get(ultimo - 1).setFill(Paint.valueOf("#FFFFFF"));
+        this.ultimo = -1;
+        labelUltimo.setText("Vértice selecionado: " + ultimo);
+        flag = false;
+    }
+
+    private void criaLinha(int i) {
+
+        double xi, yi, xf, yf;
+        Arestas auxA = new Arestas();
+        xi = Lista.get(ultimo - 1).getCenterX() - 5;
+        yi = Lista.get(ultimo - 1).getCenterY() - 5;
+        xf = Lista.get(i - 1).getCenterX() - 5;
+        yf = Lista.get(i - 1).getCenterY() - 5;
+        Line l = new Line(xi, yi, xf, yf), lAux = null;
+        l.setStrokeWidth(5);
+        int valor = 0;
+
+        auxA.setAresta(l);
+        auxA.setVerticeIni(ultimo - 1);
+        auxA.setVerticeFim(i - 1);
+
+        if (!direcionado) {
+
+            auxA.setDirec(null);
+            auxA.setDirecioanado(false);
+
+            if (valorado) {
+
+                valor = pegaValor();
+                auxA.setValor(valor);
+
+            }
+        } else {
+
+            lAux = criarDirecao(i);
+            auxA.setDirec(lAux);
+            auxA.setDirecioanado(true);
+
+            if (valorado) {
+
+                valor = pegaValor();
+                auxA.setValor(valor);
+
+            }
+        }
+
+        LisAre.add(auxA);
+        if (valorado) {
+            criarValor(valor, l);
+        }
+
+        l.setOnMouseEntered((event) -> {
+            l.setCursor(Cursor.HAND);
+            flag = true;
+
+        });
+        l.setOnMouseClicked((event) -> {
+
+            int aux, aux2;
+            for (int j = 0; j < LisAre.size(); j++) {
+                if (LisAre.get(j).getAresta() != null && LisAre.get(j).getAresta().equals(l)) {
+                    this.ultimaAresta = j;
+                }
+            }
+
+            isLaco = false;
+            aux = LisAre.get(ultimaAresta).getVerticeIni() + 1;
+            aux2 = LisAre.get(ultimaAresta).getVerticeFim() + 1;
+            LisAre.get(ultimaAresta).getAresta().setStroke(Paint.valueOf("#1842bf"));
+            labelUltimoAresta.setText("Aresta selecionada entre: " + aux + " e " + aux2);
+
+        });
+        if (lAux != null) {
+            pnPrincipal.getChildren().add(lAux);
+        }
+     
+        pnPrincipal.getChildren().add(l);
+
+        Lista.get(ultimo - 1).setFill(Paint.valueOf("#FFFFFF"));
+        this.ultimo = -1;
+        labelUltimo.setText("Vértice selecionado: " + ultimo);
+        flag = false;
+    }
+
+    private void criaFormas(int i) {
+
+        if (i != ultimo) {
+
+            criaLinha(i);
+            
+        } else {
+            CriaCirculo(i);
+        }
+
+    }
+
     private void criaCirculo(MouseEvent event)
     {
         double x,y;
@@ -180,11 +360,16 @@ public class FXMLDocumentController implements Initializable
             c.setFill(Paint.valueOf("#FFFFFF"));
             c.setStroke(Paint.valueOf("#000000"));
             Lista.add(c);
-            b.setText("v"+Lista.size());
+            b.setText("v"+numVertice++);
             b.setTranslateX(c.getCenterX()-6);
             b.setTranslateY(c.getCenterY()-6);
             ListLabel.add(b);
-            
+            if(ultimo != -1){
+                 Lista.get(ultimo-1).setFill(Paint.valueOf("#FFFFFF"));
+                 this.ultimo = -1;
+                 labelUltimo.setText("Vértice selecionado: "+ultimo);
+            }
+               
             pnPrincipal.getChildren().addAll(c,b); 
             flag = false;
         }
@@ -193,8 +378,13 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void evtLimpaUltimo(ActionEvent event) {
         
-        this.ultimo = -1;
-        labelUltimo.setText("Vértice selecionado: "+ultimo);
+        if(ultimo != -1){
+            
+            Lista.get(ultimo-1).setFill(Paint.valueOf("#FFFFFF"));
+            this.ultimo = -1;
+            labelUltimo.setText("Vértice selecionado: "+ultimo);
+        }
+        
     }
 
     @FXML
@@ -205,18 +395,28 @@ public class FXMLDocumentController implements Initializable
             if(ultimo != -1){
                 
                 Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja excluir esse vertice?",ButtonType.YES, ButtonType.NO);
-                
-                if(a.showAndWait().get() == ButtonType.YES){
-                                        
-                    pnPrincipal.getChildren().remove(Lista.get(ultimo-1));
-                    Lista.remove(ultimo-1);
-                    pnPrincipal.getChildren().remove(ListLabel.get(ultimo-1));
-                    ListLabel.remove(ultimo-1);
+         
+                if (a.showAndWait().get() == ButtonType.YES) {
+
+                    pnPrincipal.getChildren().remove(Lista.get(ultimo - 1));
+                    Lista.remove(ultimo - 1);
+                    pnPrincipal.getChildren().remove(ListLabel.get(ultimo - 1));
+                    ListLabel.remove(ultimo - 1);
+
+                    for (int i = 0; i < LisAre.size(); i++) {
+
+                        if (LisAre.get(i).getVerticeIni() == ultimo - 1 && LisAre.get(i).getLaco() != null) {
+                            pnPrincipal.getChildren().remove(LisAre.get(ultimo - 1).getLaco());
+                            i = LisAre.size();
+                        }
+
+                    }
                     this.ultimo = -1;
-                    labelUltimo.setText("Vértice selecionado: "+ultimo);
+                    labelUltimo.setText("Vértice selecionado: " + ultimo);
+
                 }
             }
-            
+
             
             if(ultimaAresta != -1){
                 
@@ -224,11 +424,23 @@ public class FXMLDocumentController implements Initializable
                 
                 if(a.showAndWait().get() == ButtonType.YES){
                                         
-                    pnPrincipal.getChildren().remove(LisAre.get(ultimaAresta).getAresta());
-                    LisAre.remove(ultimaAresta);
+                    if(isLaco){
+                        
+                        pnPrincipal.getChildren().remove(LisAre.get(ultimaAresta).getLaco());
+                        LisAre.get(ultimaAresta).setLaco(null);
+                    }                         
+                    else{
+                         pnPrincipal.getChildren().remove(LisAre.get(ultimaAresta).getAresta());
+                          LisAre.get(ultimaAresta).setAresta(null);
+                    }
+                     
+                   
+                    if(LisAre.get(ultimaAresta).getAresta() == null && LisAre.get(ultimaAresta).getLaco()== null)
+                        LisAre.remove(ultimaAresta);
                     this.ultimaAresta = -1;
                     labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
                     flag = false;
+                    isLaco = false;
                 }
 
             }
@@ -238,12 +450,23 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void evtLimparAresta(ActionEvent event) {
         
-        this.ultimaAresta = -1;
-        labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
+        if(ultimaAresta != -1){
+            
+            if( LisAre.get(ultimaAresta).getAresta() != null)
+             LisAre.get(ultimaAresta).getAresta().setStroke(Paint.valueOf("#000000"));
+            else
+                  LisAre.get(ultimaAresta).getLaco().setStroke(Paint.valueOf("#000000"));
+            this.ultimaAresta = -1;
+             labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
+         }
+       
+        
     }
 
     public void apagaTudo(ActionEvent event){
         
+        evtLimpaUltimo(event);
+        evtLimparAresta(event);
         for (int i = 0; i < Lista.size(); i++) {
             
             pnPrincipal.getChildren().remove(Lista.get(i));
@@ -253,15 +476,21 @@ public class FXMLDocumentController implements Initializable
         for (int i = 0; i < LisAre.size(); i++) {
             
             pnPrincipal.getChildren().remove(LisAre.get(i).getAresta());
+            pnPrincipal.getChildren().remove(LisAre.get(i).getLaco());
+        }
+        
+        for (int i = 0; i < valoresArestas.size(); i++) {
+        
+            pnPrincipal.getChildren().remove(valoresArestas.get(i));
         }
         
         Lista.clear();
         ListLabel.clear();
         LisAre.clear();
         valoresArestas.clear();
+        numVertice = 1;
         
-        evtLimpaUltimo(event);
-        evtLimparAresta(event);
+       
     }
     
     @FXML
@@ -269,12 +498,12 @@ public class FXMLDocumentController implements Initializable
               
         apagaTudo(event);
         
-        if(cbDire.isArmed()){
+        if(cbDire.isSelected()){
             
-            direcionado = false;
+            direcionado = true;
         }
         else
-            direcionado = true;
+            direcionado = false;
     }
 
     @FXML
@@ -282,12 +511,12 @@ public class FXMLDocumentController implements Initializable
         
         apagaTudo(event);
         
-        if(cbValorado.isArmed()){
+        if(cbValorado.isSelected()){
             
-            valorado = false;
+            valorado = true;
         }
         else
-            valorado = true;
+            valorado = false;
     }
     
 }

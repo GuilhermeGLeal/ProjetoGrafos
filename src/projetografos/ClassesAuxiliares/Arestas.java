@@ -1,5 +1,6 @@
 package projetografos.ClassesAuxiliares;
 
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 public class Arestas {
@@ -10,14 +11,22 @@ public class Arestas {
     private int verticeFim;
     private int valor;
     private boolean direcioanado;
-
-    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor, boolean direcioanado,Line direc) {
+    private Circle laco;
+  
+    
+    public Arestas(){
+        
+    }
+    
+    public Arestas(Line aresta, int verticeIni, int verticeFim, int valor, boolean direcioanado,Line direc, Circle laco) {
+        
         this.aresta = aresta;
         this.verticeIni = verticeIni;
         this.verticeFim = verticeFim;
         this.valor = valor;
         this.direcioanado=direcioanado;
         this.direc=direc;
+        this.laco = laco;
     }
 
     public Line getDirec() {
@@ -68,4 +77,11 @@ public class Arestas {
         this.direcioanado = direcioanado;
     }
     
+     public Circle getLaco() {
+        return laco;
+    }
+
+    public void setLaco(Circle laco) {
+        this.laco = laco;
+    }
 }
