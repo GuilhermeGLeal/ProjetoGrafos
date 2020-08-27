@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 
@@ -161,11 +162,28 @@ public class FXMLDocumentController implements Initializable
     private Line criarDirecao(int i){
         
         double xi, yi, xf, yf;
-        
-        xi = Lista.get(ultimo - 1).getCenterX() - 5 ;
-        yi = Lista.get(ultimo - 1).getCenterY() - 5;
+        double difX, difY;
+        double maiorX, maiorY, menorX, menorY;
+        xi = Lista.get(ultimo - 1).getCenterX() - 5;
+        yi = Lista.get(ultimo - 1).getCenterY() -5 ;
         xf = Lista.get(i - 1).getCenterX() - 5;
         yf = Lista.get(i - 1).getCenterY() - 5;
+        
+        maiorX = xi > xf ? xi: xf;
+        maiorY = yi > yf ? yf : yi;
+        menorX = xi < xf ? xi : xf;
+        menorY = yi > yf ? yf : yi;
+        
+        difX = maiorX - menorX;
+        difY = maiorY - menorY;
+        
+        difX = difX / 100;
+        difY = difY / 100;
+        Polygon poligoon = new Polygon();
+        poligoon.getPoints().addAll(new Double[]{
+            xf, yf,
+            
+        });
         Line aux = new Line(xi,yi, xf, yf);
         aux.setStrokeWidth(5);
         aux.setFill(Paint.valueOf("#0050c1"));
@@ -263,7 +281,7 @@ public class FXMLDocumentController implements Initializable
         Line l = new Line(xi, yi, xf, yf), lAux = null;
         l.setStrokeWidth(5);
         int valor = 0;
-
+        
         auxA.setAresta(l);
         auxA.setVerticeIni(ultimo - 1);
         auxA.setVerticeFim(i - 1);
@@ -367,7 +385,7 @@ public class FXMLDocumentController implements Initializable
             if(ultimo != -1){
                  Lista.get(ultimo-1).setFill(Paint.valueOf("#FFFFFF"));
                  this.ultimo = -1;
-                 labelUltimo.setText("Vértice selecionado: "+ultimo);
+                 labelUltimo.setText("Vértice selecionado: "+ultimo);   
             }
                
             pnPrincipal.getChildren().addAll(c,b); 
