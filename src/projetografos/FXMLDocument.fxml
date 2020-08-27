@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,7 +14,7 @@
          <children>
             <CheckBox fx:id="cbValorado" layoutX="931.0" layoutY="64.0" mnemonicParsing="false" onAction="#evtValorado" text="Valorado" />
             <CheckBox fx:id="cbDire" layoutX="931.0" layoutY="22.0" mnemonicParsing="false" onAction="#evtDire" text="Direcionado" />
-            <JFXComboBox fx:id="cbLista" layoutX="14.0" layoutY="44.0" prefHeight="31.0" prefWidth="255.0" />
+            <JFXComboBox fx:id="cbLista" layoutX="14.0" layoutY="44.0" onAction="#evtMostraTabli" prefHeight="31.0" prefWidth="255.0" />
             <Label layoutX="14.0" layoutY="12.0" text="Opções de Exibição" textFill="WHITE" />
             <Label fx:id="labelUltimo" layoutX="342.0" layoutY="9.0" prefHeight="27.0" prefWidth="278.0" text="Vértice selecionado:" textFill="WHITE">
                <font>
@@ -27,6 +28,7 @@
                </font>
             </Label>
             <Button layoutX="665.0" layoutY="60.0" mnemonicParsing="false" onAction="#evtLimparAresta" prefHeight="31.0" prefWidth="200.0" text="Limpar Aresta Selecionada" />
+            <TextArea fx:id="tablista" layoutX="116.0" layoutY="120.0" prefHeight="257.0" prefWidth="814.0" />
          </children>
       </AnchorPane>
    </children>

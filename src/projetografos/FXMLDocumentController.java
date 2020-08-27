@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
+import projetografos.ClassesAuxiliares.GerarMA;
 
 
 public class FXMLDocumentController implements Initializable 
@@ -54,6 +56,8 @@ public class FXMLDocumentController implements Initializable
     private List<Label> valoresArestas;
     private int numVertice = 1;
     private boolean isLaco;
+    @FXML
+    private TextArea tablista;
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -536,6 +540,39 @@ public class FXMLDocumentController implements Initializable
         }
         else
             valorado = false;
+    }
+
+    @FXML
+    private void evtMostraTabli(ActionEvent event) 
+    {
+        if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
+        {
+            GerarMA ma=new GerarMA();
+            ma.geraMatriz(LisAre);
+            System.out.print("  ");
+            for(int i=0;i<10;i++)
+            {
+                System.out.print(i+" ");
+            }
+            System.out.println("");
+            for(int i=0;i<10;i++)
+            {
+                System.out.print(i+" ");
+                for(int j=0;j<10;j++)
+                {
+                    System.out.print("");
+                }
+                System.out.println("");
+            }
+        }
+        else if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de incidência (MI)"))
+        {
+            
+        }
+        else if(cbLista.getSelectionModel().getSelectedItem().equals("Lista adjacência"))
+        {
+            tablista.setText("COE NEGO NEY");
+        }
     }
     
 }
