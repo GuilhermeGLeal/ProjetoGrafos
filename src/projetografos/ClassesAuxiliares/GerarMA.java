@@ -136,5 +136,23 @@ public class GerarMA {
         return isCompleto;
     }
     
+    public String gerarTipo(List<Circle> vertices){
+        
+        boolean isSimples = verificaSimples();
+        boolean isReguar = verificaRegular(vertices);
+        boolean isCompleto = verificaCompleto();
+        
+        
+        if(isSimples)
+            return "O grafo é SIMPLES pois a diagonal principal está zerada!!";
+        else if(isReguar)
+            return "O grafo é REGULAR pois todas as linhas tem a mesma quantidade de ligações!";
+        else if(isCompleto)
+            return "O grafo é COMPLETO pois todas as posições da matriz sem ser a diagonal principal, possuem valores";
+           
+        
+        return "";
+    }
+    
    
 }
