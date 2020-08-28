@@ -13,47 +13,57 @@ public class GerarMA {
         
         this.matriz = new int[10][10];
     }
-    
+
+    public int[][] getMatriz() {
+        return matriz;
+    }
+
+    public void setMatriz(int[][] matriz) {
+        this.matriz = matriz;
+    }
+
     public void geraMatriz(List<Arestas> listaArestas){
         
         int vertIni, vertFim;
         int valor;
-        
-        if(listaArestas.get(0).isDirecioanado())
-            direcionado = true;
-        else
-            direcionado = false;
+        if(listaArestas.size()>0)
+        {
+            if(listaArestas.get(0).isDirecioanado())
+                direcionado = true;
+            else
+                direcionado = false;
 
-        for (int i = 0; i < listaArestas.size(); i++) {
+            for (int i = 0; i < listaArestas.size(); i++) {
 
-            vertIni = listaArestas.get(i).getVerticeIni();
-            vertFim = listaArestas.get(i).getVerticeFim();
-            valor = listaArestas.get(i).getValor();
+                vertIni = listaArestas.get(i).getVerticeIni();
+                vertFim = listaArestas.get(i).getVerticeFim();
+                valor = listaArestas.get(i).getValor();
 
-            if (direcionado) {
+                if (direcionado) {
 
-                if (valor == 0) {
+                    if (valor == 0) {
 
-                    this.matriz[vertIni][vertFim] = 1;
+                        this.matriz[vertIni][vertFim] = 1;
 
+                    } else {
+
+                        this.matriz[vertIni][vertFim] = valor;
+                    }
                 } else {
 
-                    this.matriz[vertIni][vertFim] = valor;
+                    if (valor == 0) {
+
+                        this.matriz[vertIni][vertFim] = 1;
+                        this.matriz[vertFim][vertIni] = 1;
+                    } else {
+
+                        this.matriz[vertIni][vertFim] = valor;
+                        this.matriz[vertFim][vertIni] = valor;
+                    }
+
                 }
-            } else {
-
-                if (valor == 0) {
-
-                    this.matriz[vertIni][vertFim] = 1;
-                    this.matriz[vertFim][vertIni] = 1;
-                } else {
-
-                    this.matriz[vertIni][vertFim] = valor;
-                    this.matriz[vertFim][vertIni] = valor;
-                }
-
             }
-        }
+        }      
     }
     
     public boolean verificaSimples(){

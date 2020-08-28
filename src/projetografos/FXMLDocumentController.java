@@ -15,6 +15,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -545,33 +547,80 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private void evtMostraTabli(ActionEvent event) 
     {
+        int auxespaco;
+        int gambiarradois;
         if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
         {
+            String aux="                        ";
             GerarMA ma=new GerarMA();
             ma.geraMatriz(LisAre);
-            System.out.print("  ");
-            for(int i=0;i<10;i++)
+            for(int i=0;i<Lista.size();i++)
             {
-                System.out.print(i+" ");
+                aux+=i+1+"                   ";
             }
-            System.out.println("");
-            for(int i=0;i<10;i++)
+            aux+="\n";
+            for(int i=0;i<Lista.size();i++)
             {
-                System.out.print(i+" ");
-                for(int j=0;j<10;j++)
+                if(i!=9)
+                  aux+=i+1+"                      ";
+                else
+                  aux+=i+1+"                    ";
+                for(int j=0;j<Lista.size();j++)
                 {
-                    System.out.print("");
+                    String gambiarra=""+ma.getMatriz()[i][j];                  
+                    aux+=ma.getMatriz()[i][j];
+                    if(ma.getMatriz()[i][j]>10)
+                        auxespaco=gambiarra.length()+gambiarra.length()-1;
+                    else
+                        auxespaco=gambiarra.length();
+                    for (int k = auxespaco; k < 20; k++)
+                    {
+                        aux+=" ";
+                    }
                 }
+                aux+="\n";
                 System.out.println("");
-            }
+            }          
+            tablista.setText(aux);
+            
         }
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de incidência (MI)"))
         {
-            
+            String aux="                        ";
+            GerarMA ma=new GerarMA();
+            ma.geraMatriz(LisAre);
+            for(int i=0;i<Lista.size();i++)
+            {
+                aux+=i+1+"                   ";
+            }
+            aux+="\n";
+            for(int i=0;i<Lista.size();i++)
+            {
+                if(i!=9)
+                  aux+=i+1+"                      ";
+                else
+                  aux+=i+1+"                    ";
+                for(int j=0;j<Lista.size();j++)
+                {
+                    String gambiarra=""+ma.getMatriz()[i][j];                  
+                    aux+=ma.getMatriz()[i][j];
+                    if(ma.getMatriz()[i][j]>10)
+                        auxespaco=gambiarra.length()+gambiarra.length()-1;
+                    else
+                        auxespaco=gambiarra.length();
+                    for (int k = auxespaco; k < 20; k++)
+                    {
+                        aux+=" ";
+                    }
+                }
+                aux+="\n";
+                System.out.println("");
+            }          
+            tablista.setText(aux);
         }
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Lista adjacência"))
         {
-            tablista.setText("COE NEGO NEY");
+            
         }
     }
     
