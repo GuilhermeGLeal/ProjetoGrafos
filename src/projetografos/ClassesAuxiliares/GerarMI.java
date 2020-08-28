@@ -65,9 +65,18 @@ public class GerarMI {
 
     }
 
-    public void verificaSimples() {
+    public boolean verificaSimples(List<Arestas> list) {
 
-        // basta olhar diagonal principal
+        boolean isSimples = true;
+
+        for (int i = 0; i < list.size() && isSimples; i++) {
+
+            if (list.get(i).getVerticeIni() == list.get(i).getVerticeFim()) {
+                isSimples = false;
+            }
+        }
+
+        return isSimples;
     }
 
     public void verificaRegular() {
@@ -79,10 +88,10 @@ public class GerarMI {
 
         // verificar se todos acima e abaixo da diagonal principal tem um ou valor
     }
-    
-     public void verificaMultigrafo() {
 
-        // verificar se todos acima e abaixo da diagonal principal tem um ou valor
+    public void verificaMultigrafo() {
+
+        
     }
 
 }
