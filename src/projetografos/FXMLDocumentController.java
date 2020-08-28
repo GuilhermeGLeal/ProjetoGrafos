@@ -620,7 +620,29 @@ public class FXMLDocumentController implements Initializable
         }
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Lista adjacência"))
         {
-            
+            String aux="";
+            GerarMA lisadj = new GerarMA();
+            lisadj.geraMatriz(LisAre);
+            for (int i = 0; i < Lista.size(); i++) 
+            {
+                  aux+=i+1;
+                for (int j = 0; j < 10; j++) 
+                {
+                   if(lisadj.getMatriz()[i][j]!=0)
+                   {
+                      aux+=" -> ";
+                      if(!cbValorado.isSelected())
+                        aux+=j+1;
+                      else
+                      {
+                          aux+="("+lisadj.getMatriz()[i][j]+")"+" , ";
+                          aux+=j+1;
+                      }
+                   }     
+                }
+                aux+="\n";
+            }
+            tablista.setText(aux);
         }
     }
     
