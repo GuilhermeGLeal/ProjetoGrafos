@@ -42,5 +42,19 @@ public class ListaGrau {
         return verifica;
     }
     
+    public boolean verificaCompleto(int qtd_vertice){
+        
+        boolean verifica = true;
+        
+        NoGrau aux = inicio;
+                
+        while(aux != null && verifica){
+            
+            if(aux.getGrau() != qtd_vertice - 1)
+                verifica = false;
+        }
+        
+        return verifica;
+    }
     
 }
