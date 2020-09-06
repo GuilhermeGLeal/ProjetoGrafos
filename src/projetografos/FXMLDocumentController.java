@@ -573,7 +573,6 @@ public class FXMLDocumentController implements Initializable
         else
             valorado = false;
     }
-
     @FXML
     private void evtMostraTabli(ActionEvent event) 
     {
@@ -618,7 +617,7 @@ public class FXMLDocumentController implements Initializable
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de incidência (MI)"))
         {
             String aux="                        ";
-            GerarMI mi=new GerarMI();
+            GerarMI mi=new GerarMI(LisAre.get(0).isDirecioanado(),Lista);
             mi.geraMatriz(LisAre);
             System.out.print(" ");
             
