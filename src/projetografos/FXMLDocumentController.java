@@ -579,7 +579,7 @@ public class FXMLDocumentController implements Initializable
     {
         int auxespaco;
         int gambiarradois;
-        labelTipos.setText("bota a mao no baco baco tira a mao do rucubaco\n RARARARARR");
+        labelTipos.setText("Simples                                        Multigrafo                                        Regular                                        Completo");
         if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
         {
             String aux="                        ";
