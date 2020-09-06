@@ -28,7 +28,8 @@
                </font>
             </Label>
             <Button layoutX="665.0" layoutY="60.0" mnemonicParsing="false" onAction="#evtLimparAresta" prefHeight="31.0" prefWidth="200.0" text="Limpar Aresta Selecionada" />
-            <TextArea fx:id="tablista" layoutX="116.0" layoutY="120.0" prefHeight="257.0" prefWidth="814.0" />
+            <TextArea fx:id="tablista" editable="false" layoutX="116.0" layoutY="173.0" prefHeight="204.0" prefWidth="814.0" />
+            <Label fx:id="labelTipos" layoutX="118.0" layoutY="104.0" prefHeight="57.0" prefWidth="814.0" />
          </children>
       </AnchorPane>
    </children>

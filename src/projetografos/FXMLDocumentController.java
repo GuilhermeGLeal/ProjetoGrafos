@@ -27,6 +27,7 @@ import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 import projetografos.ClassesAuxiliares.GerarMA;
+import projetografos.ClassesAuxiliares.GerarMI;
 
 
 public class FXMLDocumentController implements Initializable 
@@ -58,6 +59,8 @@ public class FXMLDocumentController implements Initializable
     private boolean isLaco;
     @FXML
     private TextArea tablista;
+    @FXML
+    private Label labelTipos;
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -576,7 +579,7 @@ public class FXMLDocumentController implements Initializable
     {
         int auxespaco;
         int gambiarradois;
-        
+        labelTipos.setText("bota a mao no baco baco tira a mao do rucubaco\n RARARARARR");
         if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
         {
             String aux="                        ";
@@ -615,35 +618,54 @@ public class FXMLDocumentController implements Initializable
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de incidência (MI)"))
         {
             String aux="                        ";
-            GerarMA ma=new GerarMA();
-            ma.geraMatriz(LisAre);
-            for(int i=0;i<Lista.size();i++)
-            {
-                aux+=i+1+"                   ";
+            GerarMI mi=new GerarMI();
+            mi.geraMatriz(LisAre);
+            System.out.print(" ");
+            
+            for (int i = 0; i < LisAre.size(); i++) 
+            {                
+                aux+=(LisAre.get(i).getVerticeIni()+1)+","+(LisAre.get(i).getVerticeFim()+1)+"                ";
             }
             aux+="\n";
-            for(int i=0;i<Lista.size();i++)
+            for (int i = 0; i < Lista.size(); i++)
             {
                 if(i!=9)
                   aux+=i+1+"                      ";
                 else
                   aux+=i+1+"                    ";
-                for(int j=0;j<Lista.size();j++)
-                {
-                    String gambiarra=""+ma.getMatriz()[i][j];                  
-                    aux+=ma.getMatriz()[i][j];
-                    if(ma.getMatriz()[i][j]>10)
+                for (int j = 0; j < LisAre.size(); j++) 
+                {              
+                    String gambiarra="";
+                    
+                    if(LisAre.get(j).getVerticeIni()==i)
+                    {
+                        if(LisAre.get(j).getValor()==0)
+                            gambiarra+=1;
+                        else if(LisAre.get(j).isDirecioanado())
+                            gambiarra+=-1*(LisAre.get(j).getValor());
+                        else
+                            gambiarra+=LisAre.get(j).getValor();   
+                    }                       
+                    else if(LisAre.get(j).getVerticeFim()==i)
+                    {
+                        if(LisAre.get(j).getValor()==0)
+                            gambiarra+=1;
+                        else
+                            gambiarra+=LisAre.get(j).getValor();                       
+                    }
+                    else
+                        gambiarra+="0";
+                    
+                    aux+=gambiarra;
+                    if(LisAre.get(j).getValor()>10)
                         auxespaco=gambiarra.length()+gambiarra.length()-1;
                     else
                         auxespaco=gambiarra.length();
                     for (int k = auxespaco; k < 20; k++)
-                    {
                         aux+=" ";
-                    }
                 }
-                aux+="\n";
-                System.out.println("");
-            }          
+                aux+="\n";                        
+            }
             tablista.setText(aux);
         }
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Lista adjacência"))
