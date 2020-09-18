@@ -2,27 +2,34 @@ package projetografos.ClassesAuxiliares;
 
 public class NoLista 
 {
-    private int valor;
+    private int grau;
     private int vert;
     private NoLista prox;
-    private ListaAdj lis;
+    private ListaAdjLig lis;
 
-    public ListaAdj getLis() {
+    public NoLista() 
+    {
+        this.grau=this.vert=0;
+        this.prox=null;
+        this.lis=new ListaAdjLig();
+    }
+    
+    public ListaAdjLig getLis() {
         return lis;
     }
 
-    public void setLis(ListaAdj lis) {
+    public void setLis(ListaAdjLig lis) {
         this.lis = lis;
     }
 
-    public int getValor() 
+    public int getGrau() 
     {
-        return valor;
+        return grau;
     }
 
-    public void setValor(int valor)
+    public void setGrau(int grau)
     {
-        this.valor = valor;
+        this.grau = grau;
     }
 
     public int getVert() 
