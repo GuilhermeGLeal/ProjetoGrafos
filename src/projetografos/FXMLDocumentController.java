@@ -806,6 +806,7 @@ public class FXMLDocumentController implements Initializable
         }
         ListaAdj listaadj = new ListaAdj();
         listaadj.montarLista(Lista, LisAre);
+        listaadj.printar();
         NoLista maior=listaadj.maior();
         lis.insFim(maior);
         auxins=maior.getLis().getInicio();

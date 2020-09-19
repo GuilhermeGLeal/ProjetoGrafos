@@ -70,4 +70,22 @@ public class ListaAdj
         }
         return ret;
     }
+    
+    public void printar()
+    {
+        NoLista perc=inicio;
+        NoLig perc2;
+        while(perc!=null)
+        {
+            System.out.print(perc.getVert()+" ");
+            perc2=perc.getLis().getInicio();
+            while(perc2!=null)
+            {
+                System.out.print(perc2.getVertice()+" ");
+                perc2=perc2.getProx();
+            }
+            System.out.println("");
+            perc=perc.getProx();
+        }
+    }
 }
