@@ -23,7 +23,14 @@ public class ListaAdj
            aux=perc(vi);
            aux.getLis().insere(vi, lisAre.get(i).getValor());
            aux.setGrau(aux.getGrau()+1);
+           
+           vf=lisAre.get(i).getVerticeFim();
+           aux=perc(vf);
+           aux.getLis().insere(vf, lisAre.get(i).getValor());
+           aux.setGrau(aux.getGrau()+1);
         }
+        
+        
     }
     
     public NoLista perc(int num)
@@ -55,16 +62,19 @@ public class ListaAdj
     
     public NoLista maior()
     {
-        int maior=0;
+        int maior=-1;
         NoLista aux=this.inicio;
-        
+        NoLista ret=this.inicio;
         while(aux!=null)
         {
             if(aux.getGrau()>maior)
+            {
                 maior=aux.getGrau();
+                ret=aux;
+            }
+                
             aux=aux.getProx();
         }
-        
-        return aux;
+        return ret;
     }
 }
