@@ -28,6 +28,12 @@ import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 import projetografos.ClassesAuxiliares.GerarMA;
 import projetografos.ClassesAuxiliares.GerarMI;
+import projetografos.ClassesAuxiliares.ListaAdj;
+import projetografos.ClassesAuxiliares.ListaAdjLig;
+import projetografos.ClassesAuxiliares.ListaCor;
+import projetografos.ClassesAuxiliares.NoCor;
+import projetografos.ClassesAuxiliares.NoLig;
+import projetografos.ClassesAuxiliares.NoLista;
 
 
 public class FXMLDocumentController implements Initializable 
@@ -60,6 +66,7 @@ public class FXMLDocumentController implements Initializable
     private TextArea tablista;
     @FXML
     private Label labelTipos;
+    private char matcor[][];
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -84,6 +91,15 @@ public class FXMLDocumentController implements Initializable
         ObservableList<String> list = FXCollections.observableArrayList(opcoes);        
         cbLista.setItems(list);
         cbLista.getSelectionModel().select("Matriz de adjacência (MA)");
+        
+        matcor = new char[10][10];
+        for (int i = 0; i < 10; i++) 
+        {
+            for (int j = 1; j < 10; j++)
+            {
+                matcor[i][j]='V';
+            }
+        }
         
     }   
     
@@ -113,10 +129,12 @@ public class FXMLDocumentController implements Initializable
             if (ok) 
             {
                 criaCirculo(event);
+                preenchecor();
             } 
             else if (ultimo != -1) 
             {
-                criaFormas(i);              
+                criaFormas(i);    
+                preenchecor();
             } 
             else 
             {
@@ -776,4 +794,103 @@ public class FXMLDocumentController implements Initializable
         }
     }
     
+    private void preenchecor()
+    {
+        ListaCor lis=new ListaCor();
+        NoLig auxins;
+        NoCor perc;
+        boolean existe;
+        for (int i = 0; i < Lista.size(); i++)
+        {
+           matcor[i][0]=(char)i;
+        }
+        ListaAdj listaadj = new ListaAdj();
+        listaadj.montarLista(Lista, LisAre);
+        NoLista maior=listaadj.maior();
+        lis.insFim(maior);
+        auxins=maior.getLis().getInicio();
+        while(auxins!=null)
+        {           
+            lis.insFim(listaadj.perc(auxins.getVertice()));
+            auxins=auxins.getProx();
+        }
+        perc=lis.getInicio();
+        while(perc!=null)
+        {
+            perc=perc.getProx();
+            existe=false;
+            for (int i = 0; i < 10 && !existe; i++) 
+            {
+                if(matcor[perc.getVert().getVert()][i]!='V')
+                    existe=true;
+            }
+            if(!existe)
+            {
+                existe=false;
+                for (int i = 0; i < 10 && !existe; i++)
+                {
+                    if(matcor[perc.getVert().getVert()][i]!='X')
+                    {
+                        matcor[perc.getVert().getVert()][i]=(char)i;
+                        cor(i,matcor[perc.getVert().getVert()][i]);
+                        existe=true;
+                        auxins=perc.getVert().getLis().getInicio();
+                        for (int j = 0; j < 10; j++) 
+                        {
+                            if(lis.vere(auxins.getVertice())==null)
+                            {
+                               lis.insFim(listaadj.perc(auxins.getVertice()));
+                            }
+                            matcor[perc.getVert().getVert()][auxins.getVertice()]='X';
+                            auxins=auxins.getProx();
+                        }
+                    }
+                }
+            }
+            lis.remover();
+        }        
+    }
+    private void cor(int i,int j)
+    {
+        if(j==0)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#fc0303"));
+        }
+        else if(j==1)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#f8fc03"));
+        }
+        else if(j==2)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#20fc03"));
+        }
+        else if(j==3)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#03fce7"));
+        }
+        else if(j==4)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#0352fc"));
+        }
+        else if(j==5)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#df03fc"));
+        }
+        else if(j==6)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#cdcacf"));
+        }
+        else if(j==7)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#f58c22"));
+        }
+        else if(j==8)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#ffffff"));
+        }
+        else if(j==9)
+        {
+            Lista.get(i).setFill(Paint.valueOf("#006e23"));
+        }
+    }
 }
