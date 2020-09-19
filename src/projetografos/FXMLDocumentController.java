@@ -92,14 +92,7 @@ public class FXMLDocumentController implements Initializable
         cbLista.setItems(list);
         cbLista.getSelectionModel().select("Matriz de adjacência (MA)");
         
-        matcor = new char[10][10];
-        for (int i = 0; i < 10; i++) 
-        {
-            for (int j = 1; j < 10; j++)
-            {
-                matcor[i][j]='V';
-            }
-        }
+        
         
     }   
     
@@ -129,7 +122,6 @@ public class FXMLDocumentController implements Initializable
             if (ok) 
             {
                 criaCirculo(event);
-                preenchecor();
             } 
             else if (ultimo != -1) 
             {
@@ -800,6 +792,14 @@ public class FXMLDocumentController implements Initializable
         NoLig auxins;
         NoCor perc;
         boolean existe;
+        matcor = new char[10][10];
+        for (int i = 0; i < 10; i++) 
+        {
+            for (int j = 1; j < 10; j++)
+            {
+                matcor[i][j]='V';
+            }
+        }
         for (int i = 0; i < Lista.size(); i++)
         {
            matcor[i][0]=(char)i;
@@ -815,11 +815,11 @@ public class FXMLDocumentController implements Initializable
             auxins=auxins.getProx();
         }
         perc=lis.getInicio();
-        while(perc!=null)
+        while(perc!=null && lis!=null)
         {
-            perc=perc.getProx();
+           
             existe=false;
-            for (int i = 0; i < 10 && !existe; i++) 
+            for (int i = 1; i < 10 && !existe; i++) 
             {
                 if(matcor[perc.getVert().getVert()][i]!='V')
                     existe=true;
@@ -831,11 +831,11 @@ public class FXMLDocumentController implements Initializable
                 {
                     if(matcor[perc.getVert().getVert()][i]!='X')
                     {
-                        matcor[perc.getVert().getVert()][i]=(char)i;
+                        matcor[perc.getVert().getVert()][i]=(char)(i);
                         cor(i,matcor[perc.getVert().getVert()][i]);
                         existe=true;
                         auxins=perc.getVert().getLis().getInicio();
-                        for (int j = 0; j < 10; j++) 
+                        for (int j = 0; j < 10 && auxins!=null; j++) 
                         {
                             if(lis.vere(auxins.getVertice())==null)
                             {
@@ -846,6 +846,7 @@ public class FXMLDocumentController implements Initializable
                         }
                     }
                 }
+                perc=perc.getProx();
             }
             lis.remover();
         }        

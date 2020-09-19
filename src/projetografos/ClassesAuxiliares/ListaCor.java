@@ -47,7 +47,8 @@ public class ListaCor
     }
     public void remover()
     {
-        this.inicio=inicio.getProx();
+        if(this.inicio!=null)
+          this.inicio=this.inicio.getProx();
     }
     private void quick(NoCor ini,NoCor fi)
     {

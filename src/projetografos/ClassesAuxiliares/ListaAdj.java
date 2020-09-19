@@ -55,14 +55,19 @@ public class ListaAdj
     
     public NoLista maior()
     {
-        int maior=0;
+        int maior=-1;
         NoLista aux=this.inicio;
+        NoLista ret=this.inicio;
         while(aux!=null)
         {
             if(aux.getGrau()>maior)
+            {
                 maior=aux.getGrau();
+                ret=aux;
+            }
+                
             aux=aux.getProx();
         }
-        return aux;
+        return ret;
     }
 }
