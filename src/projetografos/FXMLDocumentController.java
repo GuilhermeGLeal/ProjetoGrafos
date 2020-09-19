@@ -23,7 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 import projetografos.ClassesAuxiliares.GerarMA;
@@ -67,6 +66,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Label labelTipos;
     private char matcor[][];
+    private boolean multigrafo;
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -78,6 +78,7 @@ public class FXMLDocumentController implements Initializable
         flag = false;
         direcionado = false;
         valorado = false;
+        multigrafo = false;
         
         this.ultimo=-1;
         this.ultimaAresta = -1;
@@ -129,12 +130,12 @@ public class FXMLDocumentController implements Initializable
             if (ok) 
             {
                 criaCirculo(event);
-                preenchecor();
+                //preenchecor();
             } 
             else if (ultimo != -1) 
             {
                 criaFormas(i);    
-                preenchecor();
+                //preenchecor();
             } 
             else 
             {
@@ -806,7 +807,7 @@ public class FXMLDocumentController implements Initializable
         }
         ListaAdj listaadj = new ListaAdj();
         listaadj.montarLista(Lista, LisAre);
-        NoLista maior=listaadj.maior();
+        NoLista maior=listaadj.maior();        
         lis.insFim(maior);
         auxins=maior.getLis().getInicio();
         while(auxins!=null)

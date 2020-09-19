@@ -57,12 +57,14 @@ public class ListaAdj
     {
         int maior=0;
         NoLista aux=this.inicio;
+        
         while(aux!=null)
         {
             if(aux.getGrau()>maior)
                 maior=aux.getGrau();
             aux=aux.getProx();
         }
+        
         return aux;
     }
 }
