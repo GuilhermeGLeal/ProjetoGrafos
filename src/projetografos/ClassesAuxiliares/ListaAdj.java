@@ -16,17 +16,20 @@ public class ListaAdj
         {
            insVert(i); 
         }
+        
         for (int i = 0; i < lisAre.size(); i++)
         {
            vi=lisAre.get(i).getVerticeIni();
            aux=perc(vi);
-           aux.getLis();
+           aux.getLis().insere(vi, lisAre.get(i).getValor());
            aux.setGrau(aux.getGrau()+1);
         }
     }
+    
     public NoLista perc(int num)
     {
         NoLista aux=inicio;
+        
         while(aux!=null && num>0)
         {
             aux=aux.getProx();
@@ -34,6 +37,7 @@ public class ListaAdj
         }
         return aux;
     }
+    
     private void insVert(int i)
     {
         NoLista no=new NoLista();
@@ -48,6 +52,7 @@ public class ListaAdj
             aux.setProx(no);
         }
     }
+    
     public NoLista maior()
     {
         int maior=0;

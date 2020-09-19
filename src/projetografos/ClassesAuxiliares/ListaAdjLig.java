@@ -4,7 +4,7 @@ public class ListaAdjLig
 {
     private NoLig inicio;
     
-    private void insere(int vert,int valor)
+    public void insere(int vert,int valor)
     {
         NoLig caixa= new NoLig(vert, valor);
         
