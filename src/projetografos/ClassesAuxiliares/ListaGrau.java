@@ -3,11 +3,21 @@ package projetografos.ClassesAuxiliares;
 
  
 public class ListaGrau {
-    
+
+   
     private NoGrau inicio;
 
     public ListaGrau() {
         this.inicio = null;
+    }
+    
+   
+     public NoGrau getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(NoGrau inicio) {
+        this.inicio = inicio;
     }
     
     public void inserirVertice(int vertice){
@@ -26,35 +36,57 @@ public class ListaGrau {
         aux.setGrau(aux.getGrau()+1);
     }
     
-    public boolean verifcaTodosIguais(){
+    public boolean verifcaTodosIguais(boolean direcionado){
         
         boolean verifica = true;
         
         NoGrau aux = inicio;
         int primeiro = aux.getGrau();
         
-        while(aux != null && verifica){
+        if(direcionado){
             
-            if(aux.getGrau() != primeiro)
-                verifica = false;
+            while(aux != null && verifica){
+
+               if(aux.getGrau() != primeiro )
+                   verifica = false;
+
+               aux = aux.getProx();
+           }
         }
+        else{
+
+            while(aux != null && verifica){
+
+               if(aux.getGrau()/2 != primeiro /2)
+                   verifica = false;
+
+               aux = aux.getProx();
+           }
+        }
+       
         
         return verifica;
     }
     
-    public boolean verificaCompleto(int qtd_vertice){
-        
+    
+    public boolean verifcaTodosIguais() {
+
         boolean verifica = true;
-        
+
         NoGrau aux = inicio;
-                
-        while(aux != null && verifica){
-            
-            if(aux.getGrau() != qtd_vertice - 1)
+        int primeiro = aux.getGrau();
+
+        while (aux != null && verifica) {
+
+            if (aux.getGrau() != primeiro) {
                 verifica = false;
+            }
+
+            aux = aux.getProx();
         }
-        
+
         return verifica;
     }
     
+  
 }

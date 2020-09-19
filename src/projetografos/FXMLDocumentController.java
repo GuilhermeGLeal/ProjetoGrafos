@@ -55,7 +55,6 @@ public class FXMLDocumentController implements Initializable
     private boolean direcionado;
     private boolean valorado;
     private List<Label> valoresArestas;
-    //private int numVertice = 1;
     private boolean isLaco;
     @FXML
     private TextArea tablista;
@@ -164,38 +163,7 @@ public class FXMLDocumentController implements Initializable
        
     }
     
-    private Line criarDirecao(int i){
-        
-        double xi, yi, xf, yf;
-        double difX, difY;
-        double maiorX, maiorY, menorX, menorY;
-        xi = Lista.get(ultimo - 1).getCenterX() - 5;
-        yi = Lista.get(ultimo - 1).getCenterY() -5 ;
-        xf = Lista.get(i - 1).getCenterX() - 5;
-        yf = Lista.get(i - 1).getCenterY() - 5;
-        
-        maiorX = xi > xf ? xi: xf;
-        maiorY = yi > yf ? yf : yi;
-        menorX = xi < xf ? xi : xf;
-        menorY = yi > yf ? yf : yi;
-        
-        difX = maiorX - menorX;
-        difY = maiorY - menorY;
-        
-        difX = difX / 100;
-        difY = difY / 100;
-        Polygon poligoon = new Polygon();
-        poligoon.getPoints().addAll(new Double[]{
-            xf, yf,
-            
-        });
-        Line aux = new Line(xi,yi, xf, yf);
-        aux.setStrokeWidth(5);
-        aux.setFill(Paint.valueOf("#0050c1"));
- 
-        return aux;
-    }
-    
+       
     
     private void CriaCirculo(int i) {
 
@@ -543,7 +511,7 @@ public class FXMLDocumentController implements Initializable
         ListLabel.clear();
         LisAre.clear();
         valoresArestas.clear();
-        //numVertice = 1;
+        labelTipos.setText("");
         
        
     }
@@ -573,17 +541,123 @@ public class FXMLDocumentController implements Initializable
         else
             valorado = false;
     }
+    
+    public void exibeResultadoMILista(GerarMI mi, String multigrafo){
+        
+        if(LisAre.size() > 0){
+            
+            String simples = "";
+            String regular = "";
+            String completo = "";
+            
+            int qtd;
+            
+             multigrafo = mi.verificaMultigrafo(LisAre);
+                      
+            if(multigrafo.isEmpty()){
+                  simples = "O grafo é Simples";
+                    multigrafo = "Não é multigrafo";
+            }
+              
+            else
+                simples = "O grafo não é simples";
+            
+                        
+              
+            if(mi.verificaRegular()){
+                
+                qtd = mi.getList().getInicio().getGrau();
+               
+                regular = qtd+"regular";
+            }
+                
+            else
+                regular = "Não é regular";
+            
+            if(mi.verificaCompleto(LisAre))
+                completo = "É um grafo completo";
+            else
+                completo = "Não é completo";           
+         
+               
+
+            labelTipos.setText("           "+"Simples: "+simples+"   Regular:   "+regular+"   Completo: "+completo+" Multigrafo:    "+multigrafo+"");
+        }
+    }
+    
+    public void exibeResultadoMA(GerarMA ma){
+        
+        if(LisAre.size() > 0){
+            
+            String simples = "";
+            String regular = "";
+            String completo = "";
+            int qtd;
+            
+            if(ma.verificaSimples())
+                simples = "O grafo é Simples";
+            else
+                simples = "O grafo não é simples";
+            
+            if(ma.verificaRegular(Lista)){
+                
+                if(direcionado)
+                    qtd = ma.getList().getInicio().getGrau();
+                else
+                 qtd = ma.getList().getInicio().getGrau()/2;
+                regular = qtd+" regular";
+            }
+                
+            else
+                regular = "Não é regular";
+            
+            if(ma.verificaCompleto(Lista.size(), LisAre.size()))
+                completo = "É um grafo completo";
+            else
+                completo = "Não é completo";
+
+            labelTipos.setText("                                "+"Simples: "+simples+"   Regular:    "+regular+"    Completo:   "+completo+"");
+        }
+       
+    }
+    
+    public String verificaMulti(GerarMI mi){
+      
+        String result = "";
+              
+        if(LisAre.size() > 0){
+         
+            result = mi.verificaMultigrafo(LisAre);
+            if(!result.isEmpty()){
+                
+                if(cbLista.getSelectionModel().getSelectedIndex() == 0)
+                    cbLista.getSelectionModel().clearAndSelect(1);
+                
+               
+            }
+      
+        }
+       return result;
+    }
+    
     @FXML
     private void evtMostraTabli(ActionEvent event) 
     {
+        String multi;
         int auxespaco;
-        int gambiarradois;
-        labelTipos.setText("Simples                                        Multigrafo                                        Regular                                        Completo");
+        GerarMI mi = new GerarMI(direcionado,Lista);    
+        GerarMA ma = new GerarMA();
+        multi = verificaMulti(mi);
+        mi.geraMatriz(LisAre);
+        ma.geraMatriz(LisAre);
+        
         if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
         {
+           
+            exibeResultadoMA(ma);
             String aux="                        ";
-            GerarMA ma=new GerarMA();
-            ma.geraMatriz(LisAre);
+            
+            
             for(int i=0;i<Lista.size();i++)
             {
                 aux+=i+1+"                   ";
@@ -617,10 +691,10 @@ public class FXMLDocumentController implements Initializable
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de incidência (MI)"))
         {
             String aux="                        ";
-            GerarMI mi=new GerarMI(LisAre.get(0).isDirecioanado(),Lista);
-            mi.geraMatriz(LisAre);
+         
+            exibeResultadoMILista(mi, multi);
             System.out.print(" ");
-            
+          
             for (int i = 0; i < LisAre.size(); i++) 
             {                
                 aux+=(LisAre.get(i).getVerticeIni()+1)+","+(LisAre.get(i).getVerticeFim()+1)+"                ";
@@ -669,28 +743,35 @@ public class FXMLDocumentController implements Initializable
         }
         else if(cbLista.getSelectionModel().getSelectedItem().equals("Lista adjacência"))
         {
-            String aux="";
-            GerarMA lisadj = new GerarMA();
-            lisadj.geraMatriz(LisAre);
-            for (int i = 0; i < Lista.size(); i++) 
-            {
-                  aux+=i+1;
-                for (int j = 0; j < 10; j++) 
-                {
-                   if(lisadj.getMatriz()[i][j]!=0)
-                   {
-                      aux+=" -> ";
-                      if(!cbValorado.isSelected())
-                        aux+=j+1;
-                      else
-                      {
-                          aux+="("+lisadj.getMatriz()[i][j]+")"+" , ";
-                          aux+=j+1;
-                      }
-                   }     
+            String aux = "";
+            boolean pri = true;
+
+            exibeResultadoMILista(mi, multi);
+
+            for (int i = 0; i < Lista.size(); i++) {
+                aux += i + 1;
+
+                for (int j = 0; j < 10; j++) {
+                    for (int k = 0; k < Lista.size(); k++) {
+
+                        if (k != i && mi.getMatriz()[i][j] != 0) {
+
+                            if (mi.getMatriz()[k][j] != 0) {
+                                aux += " -> ";
+                                if (!cbValorado.isSelected()) {
+                                    aux += k + 1;
+                                } else {
+                                    aux += "(" + mi.getMatriz()[k][j] + ")" + " , ";
+                                    aux += k + 1;
+                                }
+                            }
+                        }
+
+                    }
                 }
-                aux+="\n";
+                aux += "\n";
             }
+
             tablista.setText(aux);
         }
     }

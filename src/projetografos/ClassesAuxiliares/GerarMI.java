@@ -9,7 +9,7 @@ public class GerarMI {
 
      
     private int matriz[][];
-    private boolean direcionado;
+    private boolean direcionado;  
     private ListaGrau list;
     private int qtd_vertices;
     private List<QtdAparece> list_qtd;
@@ -20,8 +20,7 @@ public class GerarMI {
         this.direcionado = direcioando;
         this.list = new ListaGrau();
         this.list_qtd = new ArrayList();
-        ListaGrau list = new ListaGrau();
-
+      
         for (int i = 0; i < vertices.size(); i++) {
 
             list.inserirVertice(i);
@@ -29,9 +28,17 @@ public class GerarMI {
         
        
         this.qtd_vertices = vertices.size();
-        aumentaGrau();
+       
     }
 
+     public ListaGrau getList() {
+        return list;
+    }
+
+    public void setList(ListaGrau list) {
+        this.list = list;
+    }
+    
     public int[][] getMatriz() {
         return matriz;
     }
@@ -81,6 +88,8 @@ public class GerarMI {
             
             
         }
+        
+        aumentaGrau();
 
     }
 
@@ -117,11 +126,13 @@ public class GerarMI {
         return list.verifcaTodosIguais();
     }
 
-    public boolean verificaCompleto() {
+    public boolean verificaCompleto(List<Arestas> are) {
               
-        return list.verificaCompleto(qtd_vertices);
+        int qtdMax = qtd_vertices*(qtd_vertices-1)/2;
+        
+        return are.size() == qtdMax;
+        
     }
-
     
     public int posLista(QtdAparece aux){
         
@@ -129,7 +140,8 @@ public class GerarMI {
         
         for (int i = 0; i < list_qtd.size(); i++) {
             
-            if(aux.getVerticeInicio() == list_qtd.get(i).getVerticeInicio() && aux.getVerticeFim()== list_qtd.get(i).getVerticeFim()){
+            if((aux.getVerticeInicio() == list_qtd.get(i).getVerticeInicio() && aux.getVerticeFim()== list_qtd.get(i).getVerticeFim()) ||
+                    (aux.getVerticeInicio() == list_qtd.get(i).getVerticeFim() && aux.getVerticeFim()== list_qtd.get(i).getVerticeInicio()) ){
                 pos = i;
                 i = list_qtd.size();
             }
@@ -142,9 +154,10 @@ public class GerarMI {
 
         QtdAparece aux;
         int pos;
-        boolean isMultigrafo = true;
+        boolean isMultigrafo = false;
         int inicio = 0, fim = 0;
         
+        this.list_qtd = new ArrayList();
         for (int i = 0; i < arest.size(); i++) {
             
             aux = new QtdAparece(arest.get(i).getVerticeIni(), arest.get(i).getVerticeFim());
@@ -163,13 +176,15 @@ public class GerarMI {
                 isMultigrafo = true;
                 inicio = list_qtd.get(i).getVerticeInicio();
                 fim = list_qtd.get(i).getVerticeInicio();
+                if(inicio ==fim)
+                    fim = list_qtd.get(i).getVerticeFim();
             }
                 
         }
         
         
         if(isMultigrafo)
-            return "o grafo é MULTIGRAFO pois há uma ocorrencia dupla com os vertices"+inicio+" e "+fim;
+            return "Multigrafo nos vertices"+(++inicio)+" e "+(++fim);
         return "";
     }
 

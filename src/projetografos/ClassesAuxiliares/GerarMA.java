@@ -8,12 +8,23 @@ public class GerarMA {
 
     private int matriz[][];
     private boolean direcionado;
+    private ListaGrau list;
 
     public GerarMA() {
         
         this.matriz = new int[10][10];
+        list = new ListaGrau();
     }
 
+    public ListaGrau getList() {
+        return list;
+    }
+
+    public void setList(ListaGrau list) {
+        this.list = list;
+    }
+
+    
     public int[][] getMatriz() {
         return matriz;
     }
@@ -80,8 +91,7 @@ public class GerarMA {
     }
     
     public boolean verificaRegular(List<Circle> vertices) {
-
-        ListaGrau list = new ListaGrau();
+      
 
         for (int i = 0; i < vertices.size(); i++) {
 
@@ -94,7 +104,7 @@ public class GerarMA {
 
                 for (int j = 0; j < matriz[i].length; j++) {
 
-                    if (matriz[i][j] == 1) {
+                    if (matriz[i][j] >= 1) {
                         list.aumentaGrau(j);
                     }
                 }
@@ -106,7 +116,7 @@ public class GerarMA {
 
                 for (int j = 0; j < matriz[i].length; j++) {
 
-                    if (matriz[i][j] == 1) {
+                    if (matriz[i][j] >= 1) {
                         list.aumentaGrau(i);
                         list.aumentaGrau(j);
                     }
@@ -114,45 +124,16 @@ public class GerarMA {
             }
         }
 
-        return list.verifcaTodosIguais();
+        return list.verifcaTodosIguais(direcionado);
     }
 
-    public boolean verificaCompleto(){
+    public boolean verificaCompleto(int qtd_vertices, int size){
         
-        boolean isCompleto = true;
-       
-        for (int i = 0; i < matriz.length && isCompleto; i++) {
-            
-            for (int j = 0; j < matriz[i].length; j++) {
-                
-                if(i != j){
-                    
-                    if(matriz[i][j] != 1)
-                        isCompleto = false;
-                }
-            }
-        }
+        int qtdMax = qtd_vertices*(qtd_vertices-1)/2;
         
-        return isCompleto;
+        return size == qtdMax;
     }
     
-    public String gerarTipo(List<Circle> vertices){
-        
-        boolean isSimples = verificaSimples();
-        boolean isRegular = verificaRegular(vertices);
-        boolean isCompleto = verificaCompleto();
-        
-        
-        if(isSimples)
-            return "O grafo é SIMPLES pois a diagonal principal está zerada!!";
-        else if(isRegular)
-            return "O grafo é REGULAR pois todas as linhas tem a mesma quantidade de ligações!";
-        else if(isCompleto)
-            return "O grafo é COMPLETO pois todas as posições da matriz sem ser a diagonal principal, possuem valores";
-           
-        
-        return "";
-    }
-    
+   
    
 }
