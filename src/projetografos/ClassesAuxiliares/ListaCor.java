@@ -49,6 +49,10 @@ public class ListaCor
     {
         if(this.inicio!=null)
           this.inicio=this.inicio.getProx();
+        
+        if(this.inicio == null)
+            this.fim = null;
+        
     }
     private void quick(NoCor ini,NoCor fi)
     {
