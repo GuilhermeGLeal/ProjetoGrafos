@@ -895,4 +895,15 @@ public class FXMLDocumentController implements Initializable
             Lista.get(i).setFill(Paint.valueOf("#006e23"));
         }
     }
+    private void prma()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                System.out.print(matcor[i][j]+" "); 
+            }
+            System.out.println("");
+        }
+    }
 }
