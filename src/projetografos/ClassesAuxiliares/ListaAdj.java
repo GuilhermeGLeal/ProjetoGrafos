@@ -20,10 +20,19 @@ public class ListaAdj
         for (int i = 0; i < lisAre.size(); i++)
         {
            vi=lisAre.get(i).getVerticeIni();
+           vf=lisAre.get(i).getVerticeFim();
+             
            aux=perc(vi);
+           aux.getLis().insere(vf, lisAre.get(i).getValor());
+           aux.setGrau(aux.getGrau()+1);
+           
+         
+           aux=perc(vf);
            aux.getLis().insere(vi, lisAre.get(i).getValor());
            aux.setGrau(aux.getGrau()+1);
         }
+        
+        
     }
     
     public NoLista perc(int num)
