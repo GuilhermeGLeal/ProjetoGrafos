@@ -804,7 +804,8 @@ public class FXMLDocumentController implements Initializable
         for (int i = 0; i < Lista.size(); i++)
         {
            matcor[i][0]=(char)(i+48);
-        }
+        }   
+        System.out.println("pau");
         ListaAdj listaadj = new ListaAdj();
         listaadj.montarLista(Lista, LisAre);
         listaadj.printar();
