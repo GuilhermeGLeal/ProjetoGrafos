@@ -20,13 +20,15 @@ public class ListaAdj
         for (int i = 0; i < lisAre.size(); i++)
         {
            vi=lisAre.get(i).getVerticeIni();
+           vf=lisAre.get(i).getVerticeFim();
+             
            aux=perc(vi);
-           aux.getLis().insere(vi, lisAre.get(i).getValor());
+           aux.getLis().insere(vf, lisAre.get(i).getValor());
            aux.setGrau(aux.getGrau()+1);
            
-           vf=lisAre.get(i).getVerticeFim();
+         
            aux=perc(vf);
-           aux.getLis().insere(vf, lisAre.get(i).getValor());
+           aux.getLis().insere(vi, lisAre.get(i).getValor());
            aux.setGrau(aux.getGrau()+1);
         }
         
@@ -76,5 +78,23 @@ public class ListaAdj
             aux=aux.getProx();
         }
         return ret;
+    }
+    
+    public void printar()
+    {
+        NoLista perc=inicio;
+        NoLig perc2;
+        while(perc!=null)
+        {
+            System.out.print(perc.getVert()+" ");
+            perc2=perc.getLis().getInicio();
+            while(perc2!=null)
+            {
+                System.out.print(perc2.getVertice()+" ");
+                perc2=perc2.getProx();
+            }
+            System.out.println("");
+            perc=perc.getProx();
+        }
     }
 }

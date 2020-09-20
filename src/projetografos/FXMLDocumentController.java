@@ -792,7 +792,7 @@ public class FXMLDocumentController implements Initializable
         ListaCor lis=new ListaCor();
         NoLig auxins;
         NoCor perc;
-        boolean existe;
+        boolean existe, verifica;
         matcor = new char[10][10];
         for (int i = 0; i < 10; i++) 
         {
@@ -803,11 +803,12 @@ public class FXMLDocumentController implements Initializable
         }
         for (int i = 0; i < Lista.size(); i++)
         {
-           matcor[i][0]=(char)i;
+           matcor[i][0]=(char)(i+48);
         }
         ListaAdj listaadj = new ListaAdj();
         listaadj.montarLista(Lista, LisAre);
-        NoLista maior=listaadj.maior();        
+        listaadj.printar();
+        NoLista maior=listaadj.maior();
         lis.insFim(maior);
         auxins=maior.getLis().getInicio();
         while(auxins!=null)
@@ -816,9 +817,9 @@ public class FXMLDocumentController implements Initializable
             auxins=auxins.getProx();
         }
         perc=lis.getInicio();
-        while(perc!=null && lis!=null)
+        while(perc!=null && lis.getInicio()!=null)
         {
-           
+           prma();
             existe=false;
             for (int i = 1; i < 10 && !existe; i++) 
             {
@@ -830,9 +831,11 @@ public class FXMLDocumentController implements Initializable
                 existe=false;
                 for (int i = 0; i < 10 && !existe; i++)
                 {
+                    
                     if(matcor[perc.getVert().getVert()][i]!='X')
                     {
-                        matcor[perc.getVert().getVert()][i]=(char)(i);
+                        verifica = true;
+                        matcor[perc.getVert().getVert()][i]=(char)(i+48);
                         cor(i,matcor[perc.getVert().getVert()][i]);
                         existe=true;
                         auxins=perc.getVert().getLis().getInicio();
@@ -840,7 +843,15 @@ public class FXMLDocumentController implements Initializable
                         {
                             if(lis.vere(auxins.getVertice())==null)
                             {
-                               lis.insFim(listaadj.perc(auxins.getVertice()));
+                                
+                                for (int k = 0; k < 10; k++) {
+                                    
+                                    if(matcor[auxins.getVertice()][k] != 'X' && matcor[auxins.getVertice()][k] != 'V')
+                                        verifica = false;
+                                }
+                             
+                                if(verifica)
+                                     lis.insFim(listaadj.perc(auxins.getVertice()));
                             }
                             matcor[perc.getVert().getVert()][auxins.getVertice()]='X';
                             auxins=auxins.getProx();
@@ -893,6 +904,18 @@ public class FXMLDocumentController implements Initializable
         else if(j==9)
         {
             Lista.get(i).setFill(Paint.valueOf("#006e23"));
+        }
+    }
+    
+    private void prma()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                System.out.print(matcor[i][j]+" "); 
+            }
+            System.out.println("");
         }
     }
 }
