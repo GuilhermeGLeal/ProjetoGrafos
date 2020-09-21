@@ -523,7 +523,7 @@ public class FXMLDocumentController implements Initializable
         LisAre.clear();
         valoresArestas.clear();
         labelTipos.setText("");
-        
+        multigrafo = false; 
        
     }
     
@@ -641,11 +641,13 @@ public class FXMLDocumentController implements Initializable
             result = mi.verificaMultigrafo(LisAre);
             if(!result.isEmpty()){
                 
-                if(cbLista.getSelectionModel().getSelectedIndex() == 0)
+                if(cbLista.getSelectionModel().getSelectedIndex() == 0 && !multigrafo)
                     cbLista.getSelectionModel().clearAndSelect(1);
                 
-               
+               multigrafo = true;
             }
+            else
+                multigrafo = false;
       
         }
        return result;
@@ -662,7 +664,7 @@ public class FXMLDocumentController implements Initializable
         mi.geraMatriz(LisAre);
         ma.geraMatriz(LisAre);
         
-        if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)"))
+        if(cbLista.getSelectionModel().getSelectedItem().equals("Matriz de adjacência (MA)") && !multigrafo)
         {
            
             exibeResultadoMA(ma);
