@@ -41,6 +41,7 @@ public class ListaCor
             inicio=fim=caixa;
         else
         {
+            caixa.setAnt(fim);
             fim.setProx(caixa);
             fim=caixa;
         }
@@ -54,44 +55,23 @@ public class ListaCor
             this.fim = null;
         
     }
-    private void quick(NoCor ini,NoCor fi)
+    public void insercaodireta()
     {
-        NoCor i=ini,j=fi;
+        NoCor ppos,pi=inicio.getProx();
         int aux;
-        while(i!=null && i!=j)
+        NoLista aux2;
+        while(pi!=null)
         {
-            while(i!=j && i.getVert().getGrau()<=j.getVert().getGrau())
+            aux=pi.getVert().getGrau();
+            aux2=pi.getVert();
+            ppos=pi;
+            while(ppos!=inicio && aux>ppos.getAnt().getVert().getGrau())
             {
-                i=i.getProx();
+                ppos.setVert(ppos.getAnt().getVert());
+                ppos=ppos.getAnt();
             }
-            if(j.getVert().getGrau()!=i.getVert().getGrau())
-            {
-                aux=i.getVert().getGrau();
-                i.getVert().setGrau(j.getVert().getGrau());
-                j.getVert().setGrau(aux);
-                j=j.getAnt();
-            }
-            
-            while(i!=j && j.getVert().getGrau()>=i.getVert().getGrau())
-            {
-                j=j.getAnt();
-            }
-            if(j.getVert().getGrau()!=i.getVert().getGrau())
-            {
-                aux=i.getVert().getGrau();
-                i.getVert().setGrau(j.getVert().getGrau());
-                j.getVert().setGrau(aux);
-                i=i.getProx();
-            }
-            
+            ppos.setVert(aux2);
+            pi=pi.getProx();
         }
-        if(ini!=i)
-            quick(ini,i.getAnt());
-        if(fi!=j)
-            quick(j.getProx(),fim);        
-    }
-    public void quickspivo()
-    {
-        this.quick(inicio, fim);
     }
 }

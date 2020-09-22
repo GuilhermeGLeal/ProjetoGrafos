@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 import projetografos.ClassesAuxiliares.GerarMA;
@@ -66,11 +67,12 @@ public class FXMLDocumentController implements Initializable
     @FXML
     private Label labelTipos;
     private char matcor[][];
-    private boolean multigrafo;
+    private String l;
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
+        l="";
         Lista = new ArrayList();
         LisAre = new ArrayList();
         ListLabel = new ArrayList();
@@ -78,7 +80,6 @@ public class FXMLDocumentController implements Initializable
         flag = false;
         direcionado = false;
         valorado = false;
-        multigrafo = false;
         
         this.ultimo=-1;
         this.ultimaAresta = -1;
@@ -127,7 +128,12 @@ public class FXMLDocumentController implements Initializable
             else if (ultimo != -1) 
             {
                 criaFormas(i);    
+                for (int j = 0; j < this.Lista.size(); j++)
+                {
+                    Lista.get(j).setFill(Paint.valueOf("#FFFFFF"));
+                }
                 preenchecor();
+                evtMostraTabli(null);
             } 
             else 
             {
@@ -341,7 +347,7 @@ public class FXMLDocumentController implements Initializable
             CriaCirculo(i);
         }
 
-        evtMostraTabli(null);
+        
     }
 
     private void criaCirculo(MouseEvent event)
@@ -566,12 +572,12 @@ public class FXMLDocumentController implements Initializable
              multigrafo = mi.verificaMultigrafo(LisAre);
                       
             if(multigrafo.isEmpty()){
-                  simples = "O grafo é Simples";
-                    multigrafo = "Não é multigrafo";
+                  simples = "Não Simples";
+                    multigrafo = "Não multigrafo";
             }
               
             else
-                simples = "O grafo não é simples";
+                simples = "Simples";
             
                         
               
@@ -583,12 +589,12 @@ public class FXMLDocumentController implements Initializable
             }
                 
             else
-                regular = "Não é regular";
+                regular = "Não regular";
             
             if(mi.verificaCompleto(LisAre))
-                completo = "É um grafo completo";
+                completo = "Completo";
             else
-                completo = "Não é completo";           
+                completo = "Não completo";           
          
                
 
@@ -606,9 +612,9 @@ public class FXMLDocumentController implements Initializable
             int qtd;
             
             if(ma.verificaSimples())
-                simples = "O grafo é Simples";
+                simples = "Simples";
             else
-                simples = "O grafo não é simples";
+                simples = "Não simples";
             
             if(ma.verificaRegular(Lista)){
                 
@@ -620,12 +626,12 @@ public class FXMLDocumentController implements Initializable
             }
                 
             else
-                regular = "Não é regular";
+                regular = "Não regular";
             
             if(ma.verificaCompleto(Lista.size(), LisAre.size()))
-                completo = "É um grafo completo";
+                completo = "Completo";
             else
-                completo = "Não é completo";
+                completo = "Não completo";
 
             labelTipos.setText("                                "+"Simples: "+simples+"   Regular:    "+regular+"    Completo:   "+completo+"");
         }
@@ -787,18 +793,33 @@ public class FXMLDocumentController implements Initializable
 
             tablista.setText(aux);
         }
+        if(matcor!=null)
+        {           
+            String matco="\n";
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    matco+=matcor[i][j]; 
+                }
+                matco+="\n";
+            }
+            tablista.setText(tablista.getText()+"\n"+l+matco);
+        }
+        
     }
     
-    private void preenchecor()
+     private void preenchecor()
     {
+        l="";
         ListaCor lis=new ListaCor();
         NoLig auxins;
         NoCor perc;
         boolean existe, verifica;
-        matcor = new char[10][10];
+        matcor = new char[10][11];
         for (int i = 0; i < 10; i++) 
         {
-            for (int j = 1; j < 10; j++)
+            for (int j = 1; j < 11; j++)
             {
                 matcor[i][j]='V';
             }
@@ -807,7 +828,6 @@ public class FXMLDocumentController implements Initializable
         {
            matcor[i][0]=(char)(i+48);
         }   
-        System.out.println("pau");
         ListaAdj listaadj = new ListaAdj();
         listaadj.montarLista(Lista, LisAre);
         listaadj.printar();
@@ -820,34 +840,37 @@ public class FXMLDocumentController implements Initializable
             auxins=auxins.getProx();
         }
         perc=lis.getInicio();
+        lis.insercaodireta();
+        
         while(perc!=null && lis.getInicio()!=null)
         {
            prma();
             existe=false;
-            for (int i = 1; i < 10 && !existe; i++) 
+            for (int i = 1; i < 11 && !existe; i++) 
             {
-                if(matcor[perc.getVert().getVert()][i]!='V')
+                if(matcor[perc.getVert().getVert()][i]!='V' && matcor[perc.getVert().getVert()][i]!='X')
                     existe=true;
             }
             if(!existe)
             {
                 existe=false;
-                for (int i = 0; i < 10 && !existe; i++)
-                {
-                    
+                for (int i = 1; i < 11 && !existe; i++)
+                {                   
                     if(matcor[perc.getVert().getVert()][i]!='X')
                     {
-                        verifica = true;
-                        matcor[perc.getVert().getVert()][i]=(char)(i+48);
-                        cor(i,matcor[perc.getVert().getVert()][i]);
+                        
+                        matcor[perc.getVert().getVert()][i]=(char)(i+47);
+                        cor(perc.getVert().getVert(),matcor[perc.getVert().getVert()][i]);
                         existe=true;
                         auxins=perc.getVert().getLis().getInicio();
+                        prma();
                         for (int j = 0; j < 10 && auxins!=null; j++) 
                         {
+                            verifica = true;
                             if(lis.vere(auxins.getVertice())==null)
                             {
                                 
-                                for (int k = 0; k < 10; k++) {
+                                for (int k = 1; k < 11; k++) {
                                     
                                     if(matcor[auxins.getVertice()][k] != 'X' && matcor[auxins.getVertice()][k] != 'V')
                                         verifica = false;
@@ -856,21 +879,28 @@ public class FXMLDocumentController implements Initializable
                                 if(verifica)
                                      lis.insFim(listaadj.perc(auxins.getVertice()));
                             }
-                            matcor[perc.getVert().getVert()][auxins.getVertice()]='X';
+                            matcor[auxins.getVertice()][i]='X';
                             auxins=auxins.getProx();
+                            
                         }
+                        lis.insercaodireta();
+                        prma();
                     }
                 }
                 perc=perc.getProx();
             }
+            perclis(lis);
             lis.remover();
-        }        
+            
+        }  
+        System.out.println(l);
     }
     private void cor(int i,int j)
     {
+        j-=48;
         if(j==0)
         {
-            Lista.get(i).setFill(Paint.valueOf("#fc0303"));
+            Lista.get(i).setFill(Paint.valueOf("#f58c22"));
         }
         else if(j==1)
         {
@@ -898,7 +928,7 @@ public class FXMLDocumentController implements Initializable
         }
         else if(j==7)
         {
-            Lista.get(i).setFill(Paint.valueOf("#f58c22"));
+            Lista.get(i).setFill(Paint.valueOf("#fc0303"));
         }
         else if(j==8)
         {
@@ -916,9 +946,22 @@ public class FXMLDocumentController implements Initializable
         {
             for (int j = 0; j < 10; j++)
             {
-                System.out.print(matcor[i][j]+" "); 
+                System.out.print(matcor[i][j]); 
             }
             System.out.println("");
         }
+        System.out.println("");
+    }
+    private void perclis(ListaCor lis)
+    {
+        NoCor aux=lis.getInicio();
+        while(aux!=null)
+        {
+            l+=aux.getVert().getVert()+1;
+            if(aux.getProx()!=null)
+                l+=" -> ";
+            aux=aux.getProx();
+        }
+        l+="\n";
     }
 }
