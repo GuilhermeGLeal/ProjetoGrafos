@@ -23,13 +23,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javax.swing.JOptionPane;
 import projetografos.ClassesAuxiliares.Arestas;
 import projetografos.ClassesAuxiliares.GerarMA;
 import projetografos.ClassesAuxiliares.GerarMI;
 import projetografos.ClassesAuxiliares.ListaAdj;
-import projetografos.ClassesAuxiliares.ListaAdjLig;
 import projetografos.ClassesAuxiliares.ListaCor;
 import projetografos.ClassesAuxiliares.NoCor;
 import projetografos.ClassesAuxiliares.NoLig;
@@ -68,6 +66,7 @@ public class FXMLDocumentController implements Initializable
     private Label labelTipos;
     private char matcor[][];
     private String l;
+    private boolean multigrafo;
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -81,6 +80,7 @@ public class FXMLDocumentController implements Initializable
         direcionado = false;
         valorado = false;
         
+        multigrafo = false;
         this.ultimo=-1;
         this.ultimaAresta = -1;
         labelUltimoAresta.setText("Aresta selecionada entre: "+ultimaAresta);
